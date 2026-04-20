@@ -212,31 +212,87 @@ async function callClaude(apiKey, system, userContent, onStatus, retries = 2) {
 function buildHistoricalContext() {
   if (!historiskeProsjekter || historiskeProsjekter.length === 0) return ''
 
-  const lines = ['\n\nFERRO REFERANSEPROSJEKTER (bruk disse som priskalibrering):']
+  const lines = [
+    '\n\n═══════════════════════════════════════════════════════════',
+    'FERRO HISTORISKE PROSJEKTER — DIN VIKTIGSTE KALIBRERING',
+    '═══════════════════════════════════════════════════════════',
+    '',
+    'REGEL: Finn det MEST LIGNENDE prosjektet i listen nedenfor basert på:',
+    '  - Byggtype (vaskehall, lager, verksted, industribygg)',
+    '  - Størrelse (m² og dimensjoner)',
+    '  - Scope (hva Ferro leverte)',
+    'Bruk det som hovedreferanse for pris. Juster for forskjeller.',
+    ''
+  ]
+
   historiskeProsjekter.forEach((p, i) => {
     const bygg = p.bygg || {}
-    const priser = p.priser || {}
-    lines.push(`\n${i + 1}. ${p.navn}`)
-    if (bygg.type || bygg.dimensjoner || bygg.bra_m2) {
-      const parts = []
-      if (bygg.type) parts.push(bygg.type)
-      if (bygg.dimensjoner) parts.push(bygg.dimensjoner)
-      if (bygg.bra_m2) parts.push(`${bygg.bra_m2} m²`)
-      if (bygg.lokasjon) parts.push(bygg.lokasjon)
-      lines.push(`   Bygg: ${parts.join(', ')}`)
+    const priser = p.priser_til_kunde || p.priser || {}
+    const innkjop = p.innkjop_fra_leverandorer || {}
+    const paaslag = p.paaslag_beregnet || {}
+
+    lines.push(`──── ${i + 1}. ${p.navn} ────`)
+
+    // Building specs
+    const parts = []
+    if (bygg.type) parts.push(bygg.type)
+    if (bygg.dimensjoner) parts.push(bygg.dimensjoner)
+    if (bygg.bra_m2) parts.push(`${bygg.bra_m2} m² BRA`)
+    if (bygg.fasade_m2) parts.push(`${bygg.fasade_m2} m² fasade`)
+    if (bygg.tak_m2) parts.push(`${bygg.tak_m2} m² tak`)
+    if (bygg.lokasjon) parts.push(bygg.lokasjon)
+    if (parts.length) lines.push(`  Bygg: ${parts.join(', ')}`)
+
+    if (p.scope) lines.push(`  Scope: ${p.scope}`)
+    if (p.tekniske_losninger) lines.push(`  Tekniske løsninger: ${p.tekniske_losninger}`)
+
+    // Customer prices
+    const custPrices = []
+    if (priser.stal) custPrices.push(`stål ${priser.stal.toLocaleString('nb-NO')}`)
+    if (priser.yttervegg) custPrices.push(`yttervegg ${priser.yttervegg.toLocaleString('nb-NO')}`)
+    if (priser.innervegg) custPrices.push(`innervegg ${priser.innervegg.toLocaleString('nb-NO')}`)
+    if (priser.tak) custPrices.push(`tak ${priser.tak.toLocaleString('nb-NO')}`)
+    if (priser.kran_lift) custPrices.push(`kran/lift ${priser.kran_lift.toLocaleString('nb-NO')}`)
+    if (priser.dorer_vinduer) custPrices.push(`dører/vinduer ${priser.dorer_vinduer.toLocaleString('nb-NO')}`)
+    if (priser.betong) custPrices.push(`betong ${priser.betong.toLocaleString('nb-NO')}`)
+    if (priser.graving) custPrices.push(`graving ${priser.graving.toLocaleString('nb-NO')}`)
+    if (custPrices.length) lines.push(`  Priser til kunde (kr): ${custPrices.join(', ')}`)
+    if (priser.sum_eks_mva) lines.push(`  SUM EKS MVA: ${priser.sum_eks_mva.toLocaleString('nb-NO')} kr`)
+    if (priser.rigg_drift_pct) lines.push(`  Rigg og drift: ${priser.rigg_drift_pct}%`)
+
+    // Supplier / purchase data — shows pricing logic
+    const innkjopParts = []
+    if (innkjop.stal_leverandor) innkjopParts.push(`stål: ${innkjop.stal_leverandor}`)
+    if (innkjop.stal_innkjop_kr) innkjopParts.push(`stål innkjøp ${innkjop.stal_innkjop_kr.toLocaleString('nb-NO')}`)
+    if (innkjop.sandwich_leverandor) innkjopParts.push(`sandwich: ${innkjop.sandwich_leverandor}`)
+    if (innkjop.sandwich_type) innkjopParts.push(`type ${innkjop.sandwich_type}`)
+    if (innkjop.sandwich_innkjop_kr) innkjopParts.push(`sandwich innkjøp ${innkjop.sandwich_innkjop_kr.toLocaleString('nb-NO')}`)
+    if (innkjop.tak_leverandor) innkjopParts.push(`tak: ${innkjop.tak_leverandor}`)
+    if (innkjop.andre_ue) innkjopParts.push(`UE: ${innkjop.andre_ue}`)
+    if (innkjopParts.length) lines.push(`  Innkjøp: ${innkjopParts.join(' | ')}`)
+
+    // Calculated markups — learning material
+    if (paaslag.stal_paslag || paaslag.sandwich_paslag) {
+      const p1 = []
+      if (paaslag.stal_paslag) p1.push(`stål ×${paaslag.stal_paslag}`)
+      if (paaslag.sandwich_paslag) p1.push(`sandwich ×${paaslag.sandwich_paslag}`)
+      lines.push(`  Påslag brukt: ${p1.join(', ')}`)
     }
-    if (p.scope) lines.push(`   Scope: ${p.scope}`)
-    const priceEntries = []
-    if (priser.stal) priceEntries.push(`stål: ${priser.stal.toLocaleString('nb-NO')}`)
-    if (priser.yttervegg) priceEntries.push(`yttervegg: ${priser.yttervegg.toLocaleString('nb-NO')}`)
-    if (priser.innervegg) priceEntries.push(`innervegg: ${priser.innervegg.toLocaleString('nb-NO')}`)
-    if (priser.tak) priceEntries.push(`tak: ${priser.tak.toLocaleString('nb-NO')}`)
-    if (priser.kran_lift) priceEntries.push(`kran/lift: ${priser.kran_lift.toLocaleString('nb-NO')}`)
-    if (priser.sum_eks_mva) priceEntries.push(`SUM: ${priser.sum_eks_mva.toLocaleString('nb-NO')}`)
-    if (priceEntries.length) lines.push(`   Priser (kr): ${priceEntries.join(', ')}`)
-    if (p.merknader) lines.push(`   Merknader: ${p.merknader}`)
+    if (paaslag.kommentar) lines.push(`  Påslag-logikk: ${paaslag.kommentar}`)
+
+    if (p.merknader) lines.push(`  Merknader: ${p.merknader}`)
+    lines.push('')
   })
-  lines.push('\nBruk disse som kalibrering — men vurder hver pris ut fra DETTE prosjektets spesifikke omstendigheter.')
+
+  lines.push('═══════════════════════════════════════════════════════════')
+  lines.push('INSTRUKSJON FOR PRISSETTING:')
+  lines.push('1. Identifiser hvilket historisk prosjekt som ligner MEST på det nye')
+  lines.push('2. Bruk dets priser som utgangspunkt')
+  lines.push('3. Juster opp/ned basert på m², kompleksitet, scope-forskjeller')
+  lines.push('4. Påslag-logikken viser hvordan Ferro pricer materialer')
+  lines.push('5. Oppgi i "basis" HVILKET historisk prosjekt du sammenlignet med')
+  lines.push('═══════════════════════════════════════════════════════════\n')
+
   return lines.join('\n')
 }
 

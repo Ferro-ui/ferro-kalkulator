@@ -5,13 +5,13 @@
     "sist_oppdatert": "2026-04-20T07:12:40.697Z",
     "bygg": {
       "type": "Dobbel vaskehall (bilvask)",
-      "dimensjoner": "13.5×13.64×4.6m (grunnflate ca. 185m², høyde 4.6m)",
+      "dimensjoner": "13.5×13.6×4.6m (mønehøyde), grunnflate ca. 185 m2",
       "bra_m2": 185,
       "fasade_m2": 280,
       "tak_m2": 185,
-      "lokasjon": "Drammen / Nordstrand / Halden (Glitra Drift AS)"
+      "lokasjon": "Drammen / Nordstrand / Halden (inntil 3 lokasjoner, priset som én)"
     },
-    "priser": {
+    "priser_til_kunde": {
       "stal": 350773,
       "yttervegg": 423545,
       "innervegg": 0,
@@ -23,130 +23,210 @@
       "rigg_drift_pct": 4,
       "sum_eks_mva": 3777000
     },
-    "scope": "Stål + yttervegg (120mm PIR sandwich) + TRP tak + taktekking + kran/lift + dører/vinduer + 4 foldeporter + betongarbeid + graving + oljeutskiller + rørlegger + RIB-prosjektering",
-    "merknader": "Dobbel vaskehall med 2×74,9m² vaskehaller + 25,8m² teknisk rom, priset for inntil 3 lokasjoner med rabatt på 250.000 eks. mva ved samtidig bestilling av alle tre. Ventilasjon og elektro ikke inkludert."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Storm Stål AS — stål levert byggeplass 1 stk kr 269 790 + montasje kr 54 750 = kr 324 540. Alternativt tilbud fra Ståleriet AS: stål kr 185 000 + montasje kr 156 000 = kr 341 000. Ferro valgte Storm (kr 324 790 brukt i kalk).",
+      "stal_innkjop_kr": 324790,
+      "sandwich_leverandor": "Tata Steel Norway Byggsystemer AS — PIR-W-F 120mm kr 359/m2 (150 m2) og PIR-W-ST 100mm kr 316/m2 (52 m2), frakt ca kr 27 000. Ferro kalkulerte innkjøp sandwich kr 550/m2 (100mm PIR) = kr 154 000 for 280 m2.",
+      "sandwich_innkjop_kr": 154000,
+      "sandwich_type": "120 mm PIR yttervegg (kalkulert som 100mm PIR kr 550/m2), U-verdi 0,19. PUR 55 C4 overflate innvendig.",
+      "tak_leverandor": "Uni Tak AS (taktekking UE) — tilbud kr 209 299 eks mva. Ferro tilbyr kunde kr 254 375. Tata Steel selvbærende TRP Høyprofil 128R.930 Galv kr 139/m2 (178 m2 = kr 24 742) for takplater.",
+      "tak_innkjop_kr": 209299,
+      "andre_ue": "Storm Betong AS — betongkonstruksjon kr 456 815. Oljeutskiller: Odin Maskin tilbud kr 213 700 (Ferro kalkulert kr 253 000 til kunde). Rørlegger UE: kr 423 500 (leverandør ikke identifisert i dokument, men Ferro bruker erfaringstall). Graving UE: kr 407 000. Porter (4 stk ASSA ABLOY FD2050FCW): kr 460 000 til kunde. RIB prosjektering: kr 33 000. Skilt/foliering (opsjon): leverandørtilbud kr 112 364 uten lysskilt / kr 162 004 med lysskilt + 10% påslag."
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.08 — innkjøp kr 324 790, utpris kr 350 773 (108% påslag som angitt i prisoppsett)",
+      "sandwich_paslag": "1.15 — innkjøp kr 550/m2, utpris kr 633/m2. Generelt 15% påslag på alle sandwich- og takplateposter.",
+      "kommentar": "Ferro bruker konsekvent 15% påslag på sandwich, takplater, beslag og festemateriell. Kran/lift har 10% påslag. Stål har lavere påslag (8%) fordi UE-pris allerede inkluderer prosjektering og montasje. Taktekking UE (Uni Tak kr 209 299) viderefaktureres til kr 254 375 = påslag ca 21%. Oljeutskiller innkjøp kr 213 700, til kunde kr 253 000 = ca 18% påslag. Betong innkjøp kr 456 815 (Storm), til kunde kr 489 325 = ca 7% påslag. Opsjoner (skilt/foliering) viderefaktureres med 10% påslag."
+    },
+    "scope": "Ferro leverer totalentreprise for dobbel bilvaskehall: stålkonstruksjon (prosjektert, levert, montert), selvbærende TRP takplater med taktekking (mineralull + asfaltbelegg), sandwichveggelementer 120mm PIR yttervegg, 4 stk ASSA ABLOY foldeporter, 3 galvaniserte ståldører, 1 stk storvindu (Sapa SFB 86, 3290×3490mm), betongarbeid inkl. kantforsterket plate og avløpsrenner, graving, oljeutskiller (Odin Maskin SUK-R), rørlegger (vann/avløp vaskehall), RIB-prosjektering. Elektro, ventilasjon og bilvaskemaskin ikke inkludert.",
+    "tekniske_losninger": "Prefabrikkert galvanisert stålkonstruksjon boltet til randforsterket plate (Storm Stål). Selvbærende TRP Høyprofil 128R.930 Galv takplater. Taktekking: ettlags asfaltbelegg på TRP, mineralull Toprock 190mm + topplate TP50 30mm, dampsperre med klemte skjøter, U-verdi tak 0,18. Yttervegg: 120mm PIR sandwichelementer (Tata Steel PIR-W-F), U-verdi 0,22, PUR55 C4 innvendig overflate. Gulv: kantforsterket betongplate b35mf45 150mm, 50mm XPS, armeringsnett k257, stålglattet/brettskurt, fall til KS500 renner. Avløp: glassfiberkum med lensepumpe, PE-ledning til rektangulær oljeutskiller (Odin Maskin SUK-R, sandfang 3m3, utskiller 8m3, rentvannstank 9m3). Porter: ASSA ABLOY FD2050FCW foldeport 3600×3600mm, operert CW, herdet glass.",
+    "merknader": "Prosjektet prises for inntil 3 lokasjoner (Drammen/Nordstrand/Halden) med volumrabatt: 3 haller gir kr 250 000 total rabatt (kr 11 081 000 for 3 vs kr 11 331 000). Kalkyle viser DB på kr 404 894 (13% over kostnad). Ferro innhenter konkurrerende tilbud fra både Storm Stål og Ståleriet AS på stål, og velger Storm. Glassfiberelement-alternativ (Kace) ble vurdert og estimert til ca kr 1 217 000 dyrere enn standard stålløsning."
   },
   {
     "navn": "Bussgarasje Mjåvann",
     "driveId": "1DvjL-SpUyQsbSxkkc0KXZ7-xVv9_UjwH",
     "sist_oppdatert": "2026-04-20T07:10:54.286Z",
     "bygg": {
-      "type": "Bussgarasje med verksted, kontorer og sosialrom (2 etasjer)",
-      "dimensjoner": "30×(16+8+8)m, parapet 7.5m, UK fagverk lager 5.74m, UK fagverk kontor 6.185m",
-      "bra_m2": null,
+      "type": "Bussgarasje med verksted, vaskehall, ladeinfrastruktur og kontordel/personalrom",
+      "dimensjoner": "ca. 56×30m (bredde 30m, lengde ~56m basert på tegninger: 12+10.6+33.66m), parapet 7500mm, UK fagverk lager 5740mm, UK fagverk kontor 6185mm",
+      "bra_m2": 1800,
       "fasade_m2": 1144,
       "tak_m2": 1690,
-      "lokasjon": "Mjåvann"
+      "lokasjon": "Mjåvannsåsen 35, Kristiansand"
     },
-    "priser": {
+    "priser_til_kunde": {
       "stal": 2397880,
-      "yttervegg": 1554967,
+      "yttervegg": 1553969,
       "innervegg": 317055,
-      "tak": 937805,
+      "tak": 723805,
       "kran_lift": 247350,
       "dorer_vinduer": 699488,
-      "betong": 1837500,
+      "betong": 718364,
       "graving": 5032800,
       "rigg_drift_pct": 6,
       "sum_eks_mva": 31124890
     },
-    "scope": "Totalentreprise: Stål + hulldekker + yttervegg (140mm PIR sandwich) + innervegg (100mm RW) + tak (TRP + taktekking UE) + kran/lift + dører/vinduer + alle UE-fag (betong, elektriker, rørlegger, ventilasjon, graving, GHV m.m.)",
-    "merknader": "Stort bussgarasjebygg med 2 etasjer, hulldekker (410m2), mesanin, heis og vaskeanlegg – svært mange UE-fag inkludert i totalentreprisen. Salgspris eks. mva kr 31,1 mill med 13% DB."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Ikke navngitt i dokumentene — stålkonstruksjon prosjektert, levert og montert som RS-post, innkjøpspris kr 1 588 000",
+      "stal_innkjop_kr": 1588000,
+      "sandwich_leverandor": "Ruukki Construction — SP2B 140X PIR kr 470/m2 (ca. 1270m2 tilbudt), nSPB 100 WEE steinull innvegg kr 410/m2 (ca. 225m2)",
+      "sandwich_innkjop_kr": 537680,
+      "sandwich_type": "Yttervegg: SP2B 140mm PIR (Ruukki), U-verdi 0,15. Innervegg: nSPB 100mm WEE steinull (Ruukki), EI 60",
+      "tak_leverandor": "Ruukki Construction — TRP T130M-75L-930 galvanisert kr 214/m2 + tillegg interiør RR20 kr 16/m2. Taktekking UE: Uni Tak AS, tilbud kr 1 396 613 eks mva (isolering mineralull+EPS C80 240mm total + ett-lags asfaltmembran)",
+      "tak_innkjop_kr": 388700,
+      "andre_ue": "Heidelberg Materials Prefab (hulldekker HD200 mesanin 51m2 á 7000 + HD265 kontor 350m2 á 780 + trapp = kr 388 700). Systemblokk AS (betongbrystningselementer 223m2 á 2415 = kr 653 057). Kartevoll AS/maskin (graving kr 4 650 000 + asfaltering ca. 1 885 000 = tilbud kr 4 650 000 eks opsjoner). Bryn Byggklima (ventilasjon kr 2 879 000 tilbudt, kalkulert kr 3 310 850). Avitell AS (elektro kr 2 259 000 tilbudt, kalkulert kr 2 205 000). Rambøll (RIV-prosjektering rør+vent kr 370 000). ASSA Abloy (porter 5stk 4000x4500 + 2stk 5000x4500 = kr 440 000 innkjøp, kalkulert til kunde kr 462 000). UPAS/vindusleverandør (Sapa SFB 86 aluminiumsvinduer og dører, kalkulert kr 517 500 til kunde). Mal i Sør AS (maler/gulvbelegg kr 757 925 tilbudt, kalkulert kr 912 000). System Kjøkken Skien (kjøkken 2 stk, kalkulert kr 195 500). Firesafe (brannisolasjon søyler 50lm kr 55 000). TKS heis kr 330 000. Ståltrapp kr 575 000. GHV (varmeanlegg) kr 2 200 000. Rørlegger kr 3 220 000."
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.51 (51% påslag) — innkjøp kr 1 588 000, utpris kr 2 397 880. Beregnet: 2 397 880 / 1 588 000 = 1.510",
+      "sandwich_paslag": "1.10 (10% påslag på sandwich SP2B 140 PIR levert materiell) — innkjøp kr 470/m2, utpris kr 517/m2. Beregnet: 517/470 = 1.100. Innervegg RW: innkjøp kr 410/m2, utpris kr 471/m2 = 1.149 (~15%). Takplater: innkjøp kr 230/m2, utpris kr 276/m2 = 1.200 (20%). Kran/lift: 1.10 (10%). Standard UE-påslag: 1.10 (10%). Materiell/montasje eget: 1.15 (15%)",
+      "kommentar": "Ferro bruker differensierte påslag: stålkonstruksjon (RS-post) 51%, sandwich materiell 10%, takplater 20%, festemateriell/beslag 15%, kran/lift/transport 10-15%, dører/vinduer 15%, UE-poster gjennomfakturert med 10% påslag. Hulldekker: innkjøp kr 1400/stk, utpris kr 1610/stk = 15% påslag. Totalt egne arbeider: kostpris kr 5 517 502, salgspris kr 6 885 643 = 24,8% bruttomargin på egne arbeider."
+    },
+    "scope": "Ferro Stålentreprenør leverte som totalentreprenør: stålkonstruksjon (prosjektert/levert/montert), hulldekker, selvbærende takplater TRP galvanisert, taktekking (UE Uni Tak), sandwich yttervegg 140mm PIR, sandwich innervegg 100mm RW, beslagsarbeid, kran/lift, dører og vinduer (aluminium Sapa SFB 86), betongbrystningselementer (Systemblokk), porter (ASSA Abloy Crawford leddheiseporter), betongarbeid, elektriker (Avitell), VVS/rørlegger, ventilasjon (Bryn Byggklima), graving/grunn (Kartevoll), maling/gulv (Mal i Sør), ståltrapp, heis (TKS), kjøkken, låssystem, rådgivende ingeniører (ARK: Adapt, RIV: Rambøll, RIBr: Firesafe)",
+    "tekniske_losninger": "Stålkonstruksjon med fagverk, CC 6000mm, 11 akser à 6m = 66m lengde med kontordel. Tak: TRP T130M-75L-930 galvanisert selvbærende + mineralull Glava Robust + EPS C80 (90+90mm) = 240mm total isolasjon, U-verdi 0,13, ett-lags asfaltmembran tekking. Tak fall 3 grader. Yttervegg: Ruukki SP2B 140mm PIR sandwich, EI30, U-verdi 0,15. Innervegg: Ruukki nSPB 100mm RW steinull, EI60. Betongbrystning: Systemblokk sandwichelementer 300mm (80+150+70) h=1200mm. Hulldekke: HD200 mesanin, HD265 kontor (R90). Vaskehall med Acodrain/sluk. Varme: gulvvarme 360m2 + aerotempere verksted + luft/vann varmepumpe. Ventilasjon: 4 systemer totalt 16000 m3/h (kontor 9000, garasje 6000, vaskehall 2500, hybler 500). Porter: Crawford OH1042P leddheiseport 5stk 4000x4500 + 2stk 5000x4500, RAL 7016. Vinduer: Sapa SFB 86, RAL 9005.",
+    "merknader": "Stort og komplekst bussgarasjeprosjekt for Risdal Touring i Kristiansand med bredt UE-apparat (15+ underentreprenører) — Ferro fungerte som totalentreprenør med stor koordineringsoppgave. Prosjektet inkluderte ladeinfrastruktur for elbusser som opsjon (Kempower 600kW, kr 2 700 000 opsjon), og kalkulasjonen viser 13% DB (resultat kr 3 670 689 / kostnader kr 27 454 201) med salgspris kr 31 124 890 eks mva og rigg/drift 6%."
   },
   {
     "navn": "Valle båtopplag as - ny hall",
     "driveId": "15tySF0h1Lzo1kVWK8q9SjxN-Wv1RpjrK",
     "sist_oppdatert": "2026-04-20T07:08:53.305Z",
     "bygg": {
-      "type": "Båtopplagshal med mesanin/verksted",
-      "dimensjoner": "Uregelmessig planform (tilbygg til eksisterende lagerhall), tak 769m2, yttervegg 555m2 RW + 905m2 PIR",
-      "bra_m2": null,
+      "type": "Båtopplags-hall med mesanin/2.etasje (lagerhall + verksted + garderobe/WC)",
+      "dimensjoner": "Ca. 19×16-19m uregelmessig grunnplan, takplan +11.60m, 2.etasje +6.60m, mesanin +3.30m",
+      "bra_m2": 1593,
       "fasade_m2": 555,
       "tak_m2": 769,
-      "lokasjon": "Stathelle (Vallekjær 34, 3967 Stathelle)"
+      "lokasjon": "Stathelle / Valle, 3967 (Telemark)"
     },
-    "priser": {
-      "stal": 2355420,
-      "yttervegg": 884988,
+    "priser_til_kunde": {
+      "stal": 3706095,
+      "yttervegg": 884553,
       "innervegg": 1202727,
       "tak": 659802,
       "kran_lift": 240750,
       "dorer_vinduer": 201250,
-      "betong": 593090,
+      "betong": 463090,
       "graving": null,
       "rigg_drift_pct": 5,
       "sum_eks_mva": 8995000
     },
-    "scope": "Stål (inkl. hulldekker) + yttervegg sandwich (RW 200mm og PIR 120mm) + tak (TRP + taktekking) + betongfundament + betongbrystning + kran/lift + dører/vinduer + UE-arbeider (Firesafe, RIB, GHV)",
-    "merknader": "Frittstående tilbygg til eksisterende lagerhall med mesanin og verksted, hulldekker 783m2 (R90/7kN/m2). Brannseksjoneringsvegg mot eksisterende bygg i steinull-sandwich; grunnarbeid ikke medregnet, gulvstøp ikke medregnet i hovedpris (opsjon 250.000 kr)."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Ikke navngitt stålleverandør; innkjøpspris stålkonstruksjon kr 2 122 000",
+      "stal_innkjop_kr": 2122000,
+      "sandwich_leverandor": "Sandwich 200mm RW yttervegg: innkjøp kr 665/m2 (leverandør ikke navngitt). PIR 120mm innervegg/yttervegg: innkjøp kr 450/m2. Betongbrystning: Systemblokk AS kr 225 090",
+      "sandwich_innkjop_kr": 774825,
+      "sandwich_type": "Yttervegg mot brann: SP 200 L-MW steinull 200mm (U-verdi 0,20). Øvrige yttervegger og innervegger: SP 120 PIR-F skum 120mm (U-verdi 0,18). Betongbrystning: sandwich 300mm EPS, h=700mm",
+      "tak_leverandor": "Uni Tak AS (taktekking Rockwool-alternativ kr 687 668). Selvbærende TRP-takplater galvanisert innkjøp kr 275/m2",
+      "tak_innkjop_kr": 687668,
+      "andre_ue": "Hulldekker: Heidelberg Materials Prefab Norge AS kr 649 900 (innkjøp kr 1 500/m2 x 783m2 = kr 1 174 500 i kalk). Brannisolering stål: Firesafe AS kr 138 569 (i kalk som kr 152 427). Betongfundament UE: kr 130 078. Betongarbeid UE: kr 215 502. RIB prosjektering: kr 88 000. GHV (elektro/VVS koordinering?): kr 256 850. Porter: ASSA ABLOY kr 196 500 (porter ikke inkludert i tilbudssum). Betongbrystning: Systemblokk AS kr 225 090 (i kalk kr 247 588)"
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.11 (11% påslag) — stålkonstruksjon innkjøp kr 2 122 000, utpris kr 2 355 420",
+      "sandwich_paslag": "1.10 for sandwich 200mm RW (innkjøp kr 665/m2, utpris kr 732/m2). 1.15 for PIR 120mm (innkjøp kr 450/m2, utpris kr 518/m2)",
+      "kommentar": "Standard påslag i prisoppsett: stålkonstruksjon 111%, hulldekker 115% (kr 1500 innkjøp/m2 → kr 1725), takplater 120%, sandwich 200mm RW 110%, PIR 120mm 115%, kran/lift/transport 110%, dører/vinduer/beslag 115%. UE-poster viderefaktureres typisk med 110-115% påslag. Egne arbeider (montering) påslagssats 115% på arbeidskostnad."
+    },
+    "scope": "Ferro leverte komplett tilbygg til eksisterende lagerhall: stålkonstruksjon (søyler HUP/HE/IPE, dragere, bjelker), hulldekker 783m2 (R90, 7kN/m2), selvbærende TRP-takplater galvanisert med EPS C-80 + mineralull isolasjon + asfaltbelegg (U-verdi 0,13), sandwich yttervegger 200mm steinull (mot brann) og 120mm PIR, innervegger 120mm PIR, betongbrystning, stripefundamenter 600×600mm, 3 stk ståldører, 1 stk vindusfelt (Sapa SFB86 aluminiumsvindu RAL 7016), brannisolering av bærende stål (R30/R120), rigg/drift. UE: taktekking, betong, fundamenter, RIB, brannisolering (Firesafe), GHV.",
+    "tekniske_losninger": "Stålkonstruksjon slynget SA2,5 og primet jernoksyd, RAL 7000 synlige deler. Hulldekker HD265/HD400, R90, 7kN/m2 nyttelast, spennvidde maks 8100/13900mm. Tak: selvbærende TRP Areco TP200 Aluzink + dampsperre + EPS C-80 (116m3) + mineralull underlagsplate 180mm + mineralull topplate 30mm, U-verdi 0,13, fall i konstruksjon. Yttervegger: SP 200 L-MW steinull mot eksisterende bygg (brannseksjonering), SP 120 PIR-F øvrige. Innervegger 120mm PIR. Betongbrystning Systemblokk sandwichelement 300mm EPS, h=700mm, U-verdi 0,202. Stripefundament 600×600mm, direktefundamentering på fjell/sprengstein 300kPa, tiltaksklasse 1. Brannisolering: Isover FireProtect mineralull R30 (søyler HUP 300 etc.) og R120 (bærende).",
+    "merknader": "Komplekst prosjekt med tilbygg mot eksisterende lagerhall — brannseksjoneringskrav medførte steinull-sandwich på delevegg, noe som krevde spesiell tilkomst/montasjerekkefølge. Prosjektet hadde mange opsjoner (påstøp hulldekke kr 395 000, betongulv verksted kr 250 000, Rockwool-tak tillegg kr 175 000, systemvegger kr 240 000, vinduer uttrekk kr 110 000) som ikke var inkludert i hovedsummen kr 8 995 000. Internkalkylen viser salgspris kr 8 580 115 eks. rigg/opsjoner med DB kr 951 284 (12% margin på kostnader kr 7 628 831)."
   },
   {
     "navn": "Kaldtlager Rauland",
     "driveId": "1dgya5fC8LRsFjijFTg-me-RIRZQz9M0n",
     "sist_oppdatert": "2026-04-20T07:07:40.387Z",
     "bygg": {
-      "type": "kaldtlager, uisolert stålbygg med saltak",
-      "dimensjoner": "15×36×4m (gesims 4m, møne 8.33m)",
+      "type": "kaldtlager / enkelt lagerbygg, uisolert",
+      "dimensjoner": "15×36×8.33m saltak, vegghoyde 4.0m, møne 8.33m",
       "bra_m2": 540,
       "fasade_m2": 461,
       "tak_m2": 624,
-      "lokasjon": "Rauland"
+      "lokasjon": "Rauland (Vinje kommune, Telemark)"
     },
-    "priser": {
+    "priser_til_kunde": {
       "stal": 649350,
       "yttervegg": 390772,
-      "innervegg": null,
+      "innervegg": 0,
       "tak": 446941,
       "kran_lift": 154400,
       "dorer_vinduer": 50600,
-      "betong": null,
-      "graving": null,
+      "betong": 0,
+      "graving": 0,
       "rigg_drift_pct": 6,
       "sum_eks_mva": 1795000
     },
-    "scope": "Stål (prosjektert/levert/montert) + uisolert yttervegg TRP 18W + selvbærende galvaniserte takplater TRP + kran/lift + 1 stk leddheiseport",
-    "merknader": "Uisolert kaldtlager med saltak og trapesplater på vegger (ikke sandwich), snølast 4,0 kN/m2 tilpasset Rauland-klima. Betong, graving, fundament og branntiltak er ikke inkludert og leveres av andre."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Ståleriet AS (Sandefjord) — tilbud T202641: Pos1 produksjon+innstøpningsplater+transport+maling+prosjektering kr 385 000, Pos2 montasje stål kr 135 000, Pos3 montasje SW-elementer kr 305 000, Pos3a beslag SW kr inkl i Pos3, Pos5 montasje TRP takplater kr 110 000. Totalsum Ståleriet kr 935 000",
+      "stal_innkjop_kr": 555000,
+      "sandwich_leverandor": "Ruukki Construction (Porsgrunn) — tilbud 260371: TRP høyprofil T130M-75L-930 galvanisert kr 256/m2 (624m2), alternativt T45-30W-905/0.6 polyester kr 180/m2. Veggplate T20-72-190 polyester kr 160/m2 (460m2). Z-rigler Z150/1.5mm galv kr 82/lm (580lm). Ferro valgte egne innkjøpspriser: TRP kr 300/m2, veggplate 18WPIR kr 200/m2",
+      "sandwich_innkjop_kr": 92200,
+      "sandwich_type": "Trapes fasadeplate 18W.1070 PIR 0,50mm polyesterbelagt stål C3, montert vertikalt på Z150 rigler — uisolert kaldtlagerløsning",
+      "tak_leverandor": "Ruukki Construction — TRP T130M-75L-930 galvanisert kr 256/m2 eks tillegg RR20 interiør kr 16/m2. Ferro kalkulerte innkjøp kr 300/m2 galvanisert TRP",
+      "tak_innkjop_kr": 187200,
+      "andre_ue": "ASSA ABLOY Entrance Systems — Crawford OH1042P leddheiseport 3500x3500mm manuell inkl montasje kr 44 000 (Ferro påslag til kr 50 600)"
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.17 (17% påslag) — Ståleriet innkjøp kr 555 000, Ferro utpris kr 649 350. NB: Ståleriet sitt totaltilbud inkl montasje var kr 935 000, men Ferro skilte ut eget stål-innkjøp på kr 555 000",
+      "sandwich_paslag": "1.10 (10% påslag) — veggplate innkjøp kr 200/m2, utpris kr 220/m2. TRP tak: innkjøp kr 300/m2, utpris kr 360/m2 (20% påslag)",
+      "kommentar": "Ferro bruker differensiert påslagslogikk: stål 117%, TRP takplater 120%, fasadeplater 110%, montering takplater 110%, alt materiell/beslag/festemateriell 115%, kran/lift/transport 110%. Port (UE ASSA ABLOY) 115% påslag. Rigg og drift 6% av sum egne arbeider. DB 15% på salgspris uten rigg/drift (resultat kr 223 593 / salgspris kr 1 692 063 = 13,2%)"
+    },
+    "scope": "Ferro leverte komplett stålkonstruksjon prosjektert+produsert+montert (RAL 7000), selvbærende galvaniserte TRP takplater levert+montert, uisolerte trapesfasadeplater 18W PIR levert+montert på Z150 rigler, beslag+avslutninger, frakt, kran/Manitou 30 dager + terrenggående lift 40 dager, samt 1 stk Crawford leddheiseport 3500x3500mm via UE ASSA ABLOY. Betong, graving, fundamenter, tekniske fag og branntiltak ikke inkludert.",
+    "tekniske_losninger": "Saltak 30 grader takfall, 15x36m, mønehøyde 8.33m, vegghoyde 4.0m. Selvbærende TRP høyprofil takplater (Ruukki T130M-75L-930 galvanisert, kontinuitetsskjøt, c/c 6000mm, snølast S0 5.0 kN/m2, terrengkategori 3, stiv skive med vindkryss 4 sider). Fasadevegg: trapes 18W.1070 0.50mm polyester C3 vertikalt på Z150 galv rigler — ren kaldtlagerløsning uten isolasjon. Stålkonstruksjon EXC2, pålitelighetsklasse 2, snølast mark 4.0 kN/m2, ingen branndimensjonering. Søyler på innstøpningsplater i betongfundamenter levert av andre.",
+    "merknader": "Prosjektet ble kalkulert under krigen i Ukraina (mars 2026) med eksplisitte forbehold om stålprisoppgang — tilbudet er gyldig kun 14 dager og prisene kan justeres ved kontrahering. Interessant at Ståleriet sitt totaltilbud inkl SW-montasje og TRP-montasje var kr 935 000, men Ferro valgte å splitte leveransen og sette egne innkjøpspriser for materiale separat (stål innkjøp kr 555 000), noe som tyder på at Ferro brukte Ståleriet primært for stålproduksjon/montasje og tok platematerialer direkte fra Ruukki."
   },
   {
     "navn": "Sandlager",
     "driveId": "1hxsSy-T32T2YdzZ1qfwXwAlAOMPfaX-g",
     "sist_oppdatert": "2026-04-20T07:06:35.257Z",
     "bygg": {
-      "type": "Sandlager (strøgruslager/garasje)",
+      "type": "Sandlager / strølager (gruslager for Løvenskiold Fossum Kraft)",
       "dimensjoner": "12×8m, pultak",
       "bra_m2": 96,
       "fasade_m2": 204,
       "tak_m2": 96,
-      "lokasjon": "Skien (Løvenskiold Fossum Kraft)"
+      "lokasjon": "Skien (Svanstul)"
     },
-    "priser": {
+    "priser_til_kunde": {
       "stal": 372640,
-      "yttervegg": 297759,
-      "innervegg": null,
-      "tak": 248788,
-      "kran_lift": 88125,
+      "yttervegg": 297757,
+      "innervegg": 0,
+      "tak": 73620,
+      "kran_lift": 78925,
       "dorer_vinduer": 23000,
-      "betong": null,
-      "graving": null,
+      "betong": 0,
+      "graving": 0,
       "rigg_drift_pct": 5,
       "sum_eks_mva": 1190000
     },
-    "scope": "Stål (prosjektert, levert, montert) + yttervegg sandwich 120mm PIR + tak (TRP galvanisert + taktekking papp/membran via UE) + 2 leddporter (UE) + 1 ståldør + kran/lift + takrenne",
-    "merknader": "Lite sandlagerbygg (96 m²) etablert delvis på betong legoblokk-brystning; betong og graving ikke inkludert i Ferro-leveransen. Opsjon for motoriserte leddporter: +25 800 kr eks. mva."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Ståleriet AS (Sandefjord) — tilbud T202655 datert 25.03.2026: Pos1 produksjon stål kr 184 000, Pos2 montasje stål kr 55 000, Pos3 montasje SW-elementer kr 155 000, Pos4 montasje takplater kr 75 000 — total kr 469 000. Ferro benyttet kr 274 000 som innkjøpspris for stålkonstruksjon i kalkulasjonen (kun produksjon+montasje stål, eks. sandwich og takplatemontering)",
+      "stal_innkjop_kr": 274000,
+      "sandwich_leverandor": "Areco Profiles AS — tilbud 26.127 datert 13.03.2026: SP 120 PIR-F veggelementer 220 m2 à kr 449 = kr 98 780 + frakt kr 8 950. Takplater Areco TP 131 96 m2 à kr 209 = kr 20 064 + emballasje kr 600 + frakt kr 4 500. Total Areco: kr 134 644",
+      "sandwich_innkjop_kr": 108120,
+      "sandwich_type": "120mm PIR skum (SP 120 PIR-F), modul 1100mm, U-verdi 0,18 W/K*m2, brannklasse B-s1,d0. Utv: polyester std. farger, innv: RAL 9002 gråhvit",
+      "tak_leverandor": "Areco Profiles AS — Areco TP 131 galvanisert (Aluzink, korrosjonsklasse C3), 96 m2 à kr 209 = kr 20 064 + frakt kr 4 500 + emballasje kr 600 = kr 25 164. Taktekking UE: Uni Tak AS tilbud 2412 datert 10.03.2026: kr 122 707 eks mva (mineralull toprock 190mm + dampsperre + asfaltbelegg papp/membran, 22 cm total isolasjon)",
+      "tak_innkjop_kr": 122880,
+      "andre_ue": "Porter: ASSA ABLOY (Crawford OH1042P leddheiseport) — innkjøp kr 54 000 for 2 stk manuell (tilbudt Ferro kr 108 000 for 2 stk manuell / kr 130 000 for 2 stk med motor). Ferro brukte kr 54 000 innkjøp → utpris kr 113 400 til kunde. Opsjon porter med motor: tillegg kr 25 800 eks mva. Taktekking UE (Uni Tak): innkjøp kr 122 707, utpris til kunde kr 135 168."
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.36 (36% påslag) — innkjøp kr 274 000, utpris kr 372 640",
+      "sandwich_paslag": "1.10 (10% påslag) — innkjøp kr 108 120 (Areco SP120 PIR 204m2 à kr 530), utpris kr 118 932. NB: Areco tilbød 220m2 à kr 449 = kr 98 780, men Ferro kalkulerte innkjøp à kr 530/m2 — trolig justert pris/mengde i forhandling",
+      "kommentar": "Stål: 36% påslag (høyest, inkl. prosjekteringsrisiko og prisusikkerhet Ukraina/Covid). Sandwich yttervegg: 10% påslag. Takplater TRP: 20% påslag (innkjøp kr 300/m2, utpris kr 360/m2). Montering takplater: 10% påslag. Kran/lift (Manitou): 10% påslag (kr 2 200 → kr 2 420/dag). UE taktekking: 10% påslag (kr 122 880 → kr 135 168). Porter (ASSA ABLOY): 110% påslag — innkjøp kr 54 000 for 2 stk, utpris kr 113 400 (beregnet faktor 2.10). Generell UE-sats: 110% (10% påslag). Egne arbeider/materiell ellers: 115% (15% påslag). Rigg og drift: 5% av sum."
+    },
+    "scope": "Ferro leverte komplett stålbygg 12×8m for Løvenskiold Fossum Kraft: stålkonstruksjon (prosjektert, produsert og montert), sandwich yttervegger 120mm PIR, selvbærende galvaniserte takplater TRP med komplett taktekking papp/membran inkl. mineralull 220mm, 2 stk manuelle Crawford leddporter 6×4m, 1 stk ståldør, takrenner/nedløp 12lm, kran og lift. Betong, graving og innervegger ikke inkludert.",
+    "tekniske_losninger": "Stålkonstruksjon EXC2, pålitelighetsklasse 2, snølast 4,0 kN/m2, ingen branndimensjonering. Pultak med selvbærende Areco TP 131 galvanisert takplate (Aluzink C3) direkte på takbjelker. Taktekking: dampsperre + Mineralull Toprock 190mm + topplate 30mm (totalt 220mm) + ett-lags asfaltbelegg på TRP 50-100. Yttervegger: horisontale sandwich SP 120 PIR-F elementer, rød farge. Porter: Crawford OH1042P 4000×6000mm manuell, grønn RAL 6005. Bygget etableres på betongmur/legoblokk og betonggulv (ikke i Ferro-scope). Stål innfestes i betonggulv/fundament.",
+    "merknader": "Lite sandlagerbygg (96 m2) med høye porter (6m) relativt til byggets grunnflate — portene (2 stk 6×4m) utgjør dominerende del av fasaden og koster forholdsmessig mye (kr 113 400 av kr 1 190 000 = ~10%). Tilbudet ble avgitt under Ukraina-krig og Covid-usikkerhet (mars 2026), med eksplisitt forbehold om prisjustering på stål og sandwich — dette forklarer det høye stålpåslaget på 36%. DB-margin kalkulert til 18% (resultat kr 175 520 / salgspris kr 1 131 772 uten rigg/drift)."
   },
   {
     "navn": "Ringsevja 22 - Ulefoss Auto",
     "driveId": "1wfYlUqTy1eOX8d4DHQ4B-WMAsERdAi1i",
     "sist_oppdatert": "2026-04-20T07:04:42.710Z",
     "bygg": {
-      "type": "Bilverksted / autoverksted",
-      "dimensjoner": "18×15m",
+      "type": "bilverksted/autoverksted",
+      "dimensjoner": "18×15m (verksted 213,3m² + servicerom 3×18m = ca 54m² = totalt ca 270m²)",
       "bra_m2": 270,
       "fasade_m2": 345,
       "tak_m2": 270,
-      "lokasjon": "Ulefoss, Ringsevja 22"
+      "lokasjon": "Ulefoss, Nome kommune, Telemark"
     },
-    "priser": {
+    "priser_til_kunde": {
       "stal": 549285,
       "yttervegg": 536878,
       "innervegg": 103155,
@@ -158,8 +238,24 @@
       "rigg_drift_pct": 4,
       "sum_eks_mva": 4798647
     },
-    "scope": "Stål + yttervegg (120mm PIR sandwich) + tak (selvbærende takplater + taktekking UE) + innervegg + kran/lift + porter + betongarbeid + graving + fundament + UE-koordinering (elektriker, rørlegger, RIB, RIBr, byfy)",
-    "merknader": "Bilverksted med hulldekke (54 m2) over inngangsparti/garderobe-sone, 3 porter og betongbrystning (80 m2). Prosjektet inkluderte et bredt spekter av UE-fag; DB-resultat 15% på salgspris eks. opsjoner."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Ståleriet AS (Sandefjord) — tilbud T202642: Produksjon stål kr 375 000, montasje stål kr 90 000, montasje SW-elementer kr 274 010, beslag utv SW kr inkl, montasje takplater kr 44 520. Totalt Ståleriet: kr 783 530. NB: Ferro kalkulerer stålinnkjøp til kr 422 527 internt.",
+      "stal_innkjop_kr": 422527,
+      "sandwich_leverandor": "Ruukki Construction (Porsgrunn) — SP2B 120 PIR kr 440/m² (ca 150m²), nSPB 100 steinull kr 430/m² (ca 70m²), TRP T130M-75L galv kr 195/m² + interiør RR20 kr 15/m². Internt kalkulert sandwich innkjøp: yttervegg kr 460/m² × 345m² = kr 158 700, innervegg kr 450/m² × 60m² = kr 27 000",
+      "sandwich_innkjop_kr": 185700,
+      "sandwich_type": "Yttervegg: 120mm PIR skum (Ruukki SP2B 120X), innkjøp kr 460/m². Innervegg: 60m² sandwich (trolig 100mm), innkjøp kr 450/m². Selvbærende takplater galvanisert TRP (Ruukki T130M-75L-930), innkjøp kr 200/m²",
+      "tak_leverandor": "PeCel AS (Ulefoss) — taktekking 1-lags ATB kr 280/m² + isolasjon 280mm ubrennbar kr 584/m² × 300m² = netto kr 275 715. Ferro tilbyr kunde kr 282 150 for 270m². Ruukki leverer TRP-plater innkjøp kr 200/m²",
+      "tak_innkjop_kr": 275715,
+      "andre_ue": "BKI AS gravearbeid kr 251 053 netto (Ferro priser til kunde kr 402 500). Nome Elektro AS elektriker kr 232 000 (Ferro til kunde kr 280 800). Reis VVS AS rørlegger kr 104 498 netto (Ferro til kunde kr 258 500). Porter 3 stk UE (pris ikke oppgitt i dokumenter, kunde kr 227 700). Betongbrystning UE innkjøp kr 260 130, kunde kr 264 000. Fundament UE innkjøp ca kr 171 472. RIBr kr 33 000, RIB kr 77 000, Byfy kr 88 000, Firesafe kr 33 000, Trapp kr 97 750, GHV kr 154 000. ADAPT Arkitekter kr 80 000 (Byfy i kalkulasjon)."
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.30 (30% påslag) — innkjøp kr 422 527, utpris kr 549 285. 549285/422527 = 1.300",
+      "sandwich_paslag": "1.15 (15% påslag) — yttervegg innkjøp kr 460/m², utpris kr 529/m². 529/460 = 1.150. Montasje sandwich innkjøp kr 300/m², utpris kr 345/m² = 1.150. Tilsvarende 15% på alle sandwich-poster og materiell",
+      "kommentar": "Ferro bruker konsekvent 30% påslag på stålkonstruksjon og 15% påslag på sandwich/kledning, takplater, montasjearbeider, beslag og festemateriell. Kran/lift: 10% påslag (Manitou innkjøp kr 2 200/dag, ut kr 2 420/dag). Store UE-poster (graving, elektriker, rørlegger, betong) har variert påslag: graving 60% (251 053→402 500), elektriker 21% (232 000→280 800), rørlegger 148% (104 498→258 500). Total DB: kr 643 004 = 15% over kostpris (115% kalkulasjon)."
+    },
+    "scope": "Ferro leverte totalentreprise for nytt bilverkstadbygg 270m² inkl. stålkonstruksjon, sandwich ytter- og innervegger, selvbærende takplater, taktekking med isolasjon, 3 stk porter, dør, inngangsparti, betongbrystning, grunnarbeider, fundament, betongarbeid, elektriker, rørlegger, kran/lift, alle rådgivere (RIB, RIBr, RIG, Byfy/ARK), firesikring og GHV.",
+    "tekniske_losninger": "Stålkonstruksjon prosjektert og produsert av Ståleriet AS, EXC2, korrosjonsklasse C1, overflate C2 RAL 7000-serie. Yttervegg 120mm PIR sandwich (Ruukki SP2B 120X) horisontalt montert, U-verdi 0,18. Selvbærende TRP galvanisert tak (Ruukki T130M-75L-930), takfall 3°, snølast S0=4,0 kN/m², terrengkategori 3. Taktekking 1-lags ATB + isolasjon 280mm ubrennbar U-verdi 0,13 (PeCel AS). Hulldekke 54m² i serviceromsdel. Porter 3×3000×3300mm elektrisk (Standard Lift System SL). Betongbrystning 80m². Grunnarbeider inkl. graving, masser, ringmur og oljeutskiller (BKI AS).",
+    "merknader": "Prosjektet er lokalisert på Ferro sitt eget adresse (Ringsevja 2/22, Ulefoss), noe som er uvanlig — Ferro bygger trolig for naboeiendom/kunde Ulefoss Auto. Kalkulasjonen inneholder en stor 'Del 2'-opsjonspakke (GHV kr 1,45M, gulvlegging kr 150k, elektro kr 248k, TKS heis kr 300k, strømskinne kr 407k m.fl.) med samlet kostpris kr 6,7M og utpris kr 8,0M som ikke er inkludert i hovedtilbudet — dette viser at totalprosjektet kan være vesentlig større enn de kr 4,8M som ble tilbudt i basis."
   },
   {
     "navn": "Geithus - Enkel vaskehall",
@@ -167,13 +263,13 @@
     "sist_oppdatert": "2026-04-20T07:03:24.393Z",
     "bygg": {
       "type": "Vaskehall (bilvask)",
-      "dimensjoner": "ukjent grunnflate, tak 80m², yttervegg 153m², innervegg 52m²",
+      "dimensjoner": "11.2×7.12m (ca. 80m2 tak), gesimshøyde 4.5m",
       "bra_m2": 80,
       "fasade_m2": 153,
       "tak_m2": 80,
-      "lokasjon": "Geithus"
+      "lokasjon": "Geithus, Modum kommune, Buskerud"
     },
-    "priser": {
+    "priser_til_kunde": {
       "stal": 308450,
       "yttervegg": 284671,
       "innervegg": 69828,
@@ -181,11 +277,27 @@
       "kran_lift": 93625,
       "dorer_vinduer": 161230,
       "betong": 374000,
-      "graving": null,
+      "graving": 0,
       "rigg_drift_pct": 9,
       "sum_eks_mva": 2873858
     },
-    "scope": "Stål + yttervegg (120mm PIR sandwich) + tak (selvbærende galvanisert TRP + taktekking UE) + innervegg + kran/lift + dører/vinduer + betongarbeid + oljeutskiller + rørlegger + skilt/foliering (Glitra-profil)",
-    "merknader": "Liten enkel vaskehall (80m² tak) for Glitra-kjeden med full Ferro-leveranse inkl. UE-koordinering (betong, taktekking, oljeutskiller, rørlegger). Prosjektet inkluderer betydelig skilting/foliering (kr 132 000) og oljeutskiller (kr 495 523) som særlig kostnadsdrivere utover selve bygget."
+    "innkjop_fra_leverandorer": {
+      "stal_leverandor": "Ståleriet AS (Sandefjord) — produsert konstruksjonstål galvanisert: kr 142 000 + levering kr 11 000 + montering kr 46 000 = totalt kr 199 000",
+      "stal_innkjop_kr": 199000,
+      "sandwich_leverandor": "Areco Profiles AS — SP 120 PIR-F yttervegg kr 459/m2 (170m2 = kr 78 030), SP 80 PIR innervegg kr 409/m2 (60m2 = kr 24 540), takplater TP 131 Aluzink AZ185 kr 289/m2 (80m2 = kr 23 120), frakt veggpaneler kr 9 800, frakt takplater kr 3 950, stillkostnad kr 8 550, prosjektering kr 1 750. Totalsum Areco: kr 150 340",
+      "sandwich_innkjop_kr": 150340,
+      "sandwich_type": "Yttervegg: SP 120 PIR-F (skum) 120mm, U-verdi 0,18, RAL 7016 antrasitt grå utv / RAL 9010 hvit innv, Linear profil, korrosjonsklasse C4. Innervegg: SP 80 PIR (skum) 80mm, U-verdi 0,29, RAL 9010 hvit begge sider. Takplater: Areco TP 131, Aluzink AZ185, korrosjonsklasse C4",
+      "tak_leverandor": "Uni Tak AS (Porsgrunn) — taktekking 84m2 asfaltbelegg på TRP 100-150, mineralull 120mm underlagsplate + EPS C80 + topplate TP50 30mm, dampsperre, sluk, fallsikring, rigg. Innkjøp: kr 104 454 (eks mva). Kalkulert med kr 112 000 innkjøp (1400 kr/m2 x 80m2)",
+      "tak_innkjop_kr": 112000,
+      "andre_ue": "Porter (2 stk, Pido Ecolid 4-delt foldeport 3500x3050mm): innkjøp ukjent, kalkulert kr 220 000 til kunde. Betongarbeid (UE): kr 374 000 til kunde. RIB Rambøll (prosjektering konstruksjon): kr 49 500 + tilleggsmelding kr 8 000. Skilt/foliering (Addekor): kr 132 000 til kunde. Oljeutskiller (Odin Maskin, type SUK-R, sandfang 3m3/utskiller 8m3/rentvannstank 9m3): innkjøp kr 203 240, kalkulert kr 495 523 til kunde. Rørlegger (Reis VVS AS): innkjøp kr 255 848, kalkulert kr 220 000 til kunde. Låssystem: kr 8 050. Oppmåling/maskinstyring: kr 3 967. GHV kr 172 297."
+    },
+    "paaslag_beregnet": {
+      "stal_paslag": "1.55 (55% påslag) — innkjøp kr 199 000, utpris kr 308 450",
+      "sandwich_paslag": "1.15 (15% påslag) — yttervegg innkjøp kr 560/m2 (Areco ca kr 459/m2 + frakt/stillkostnad), utpris kr 644/m2. Innervegg innkjøp kr 570/m2, utpris kr 656/m2. NB: Ferro bruker interne standardpriser som er noe høyere enn faktisk Areco-pris, påslaget på Areco-tilbudet er reelt ca. 15-20%",
+      "kommentar": "Stål har høyest påslag (55%) da Ferro tar prosjekterings- og koordineringsrisiko. Sandwich/veggelementer og tak har 15% påslag. Kran/lift 10%. UE som rørlegger videreføres tilnærmet til kostpris eller med lite påslag (Reis VVS innkjøp kr 255 848 men kalkulert kr 220 000 — kan indikere at rørlegger ble priset lavere enn innhøst tilbud, eller annet tilbud ble benyttet). Oljeutskiller har svært høyt påslag: innkjøp kr 203 240, utpris kr 495 523 = faktor 2.44. Porter kalkulert kr 242 000 for 2 stk (kr 121 000/stk). Taktekking: innkjøp kr 1 400/m2 (Uni Tak kr 104 454/80m2 = kr 1 306/m2 inkl. rigg), utpris kr 1 610/m2 = faktor 1.15."
+    },
+    "scope": "Ferro leverte totalentreprise for enkel bilvaskehall inkl.: stålkonstruksjon (galvanisert, prosjektert og montert), sandwich yttervegg 120mm PIR og innervegg 80mm PIR, selvbærende takplater + taktekking (asfaltbelegg/membran), porter (2 stk foldeporter), dører og vinduer (aluminium WICONA/WICLINE 75), kran og lift, betongarbeid, sanitærinstallasjon (rørlegger), oljeutskiller med sandfang og rentvannstank, skilt/foliering, konstruksjonsprosjektering (Rambøll RIB)",
+    "tekniske_losninger": "Selvbærende takplater Areco TP 131 Aluzink AZ185 (korrosjonsklasse C4) + EPS C80 + mineralull 120mm underlagsplate + asfaltbelegg (ett-lags tekking) med fall til sluk. Yttervegg sandwich SP 120 PIR-F 120mm (U-verdi 0,18). Innervegg SP 80 PIR 80mm (U-verdi 0,29). Stålkonstruksjon galvanisert EXC2 (Ståleriet AS). Porter: Pido Ecolid 4-delt utadslående foldeport 3500x3050mm (x2). Vindu WICONA WICLINE 75 evo 6000x2990mm. Dør WICSTYLE 75 evo 990x2090mm (1p) og 1490x2090mm (2p). Oljeutskiller rektangulær SUK-R type, sandfang 3m3, utskiller 8m3, rentvannstank 9m3 (Odin Maskin). Konstruksjonsprosjektering ved Rambøll. Gesimshøyde 4,5m, snølast 4,5 kN/m2, vindlast 0,65 kN/m2, terrengkategori 3.",
+    "merknader": "Lite bygg (80m2 BRA) med høy teknisk kompleksitet for vaskehall — oljeutskiller, slukrenner, pumpekum og spesialporter driver kostnaden opp betydelig (sum ca. kr 2,87M eks mva = ca. kr 35 900/m2). Underveis endring av vaskerenne-løsning medførte tilleggsoppdrag fra Rambøll (kr 8 000). Ferro benytter høyere påslag på oljeutskiller (ca. 2,4x) og stål (1,55x) enn på sandwich/tak (1,15x)."
   }
 ]

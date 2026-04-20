@@ -129,33 +129,53 @@ function pickRelevantFiles(files) {
     kalk: null,
     tilbud: null,
     drawings: [],
+    supplier_tilbuds: [], // tilbud fra leverandører — for læringsmateriale
   }
 
+  // Group files by subfolder to find the biggest PDF in each
+  const bySubfolder = {}
   for (const f of files) {
+    const key = f.subfolder || '_root'
+    if (!bySubfolder[key]) bySubfolder[key] = []
+    bySubfolder[key].push(f)
+  }
+
+  // Root files
+  for (const f of bySubfolder._root || []) {
     const name = f.name.toLowerCase()
     const size = parseInt(f.size || 0)
 
-    // Kalkulasjon — xlsx in root (not in subfolder)
-    if (!f.subfolder && name.endsWith('.xlsx') && size < 5_000_000) {
+    if (name.endsWith('.xlsx') && size < 5_000_000) {
       if (!picks.kalk || new Date(f.modifiedTime) > new Date(picks.kalk.modifiedTime)) {
         picks.kalk = f
       }
     }
 
-    // Tilbud — PDF in root that's likely our offer (not supplier)
-    if (!f.subfolder && name.endsWith('.pdf') && size < 10_000_000) {
+    if (name.endsWith('.pdf') && size < 10_000_000) {
       const isOurTilbud = name.includes('tilbud') || name.includes('vaskehall') ||
-                         name.includes('bygg') || !name.includes('24164') // skip arch drawings
+                         name.includes('bygg') || !name.includes('24164')
       if (isOurTilbud && (!picks.tilbud || size > (picks.tilbud.size || 0))) {
         picks.tilbud = f
       }
     }
 
-    // Drawings — PDF with Plan/Snitt/Fasader, prefer 1-2
     if (name.endsWith('.pdf') && size < 15_000_000) {
       if (name.includes('plan') || name.includes('snitt') || name.includes('fasad')) {
         if (picks.drawings.length < 2) picks.drawings.push(f)
       }
+    }
+  }
+
+  // From each subfolder — pick the biggest PDF (typically the final supplier tilbud)
+  for (const [subfolder, folderFiles] of Object.entries(bySubfolder)) {
+    if (subfolder === '_root') continue
+
+    const pdfs = folderFiles
+      .filter(f => f.name.toLowerCase().endsWith('.pdf') && parseInt(f.size || 0) < 8_000_000)
+      .sort((a, b) => parseInt(b.size || 0) - parseInt(a.size || 0))
+
+    if (pdfs.length > 0) {
+      picks.supplier_tilbuds.push({ ...pdfs[0], category: subfolder })
     }
   }
 
@@ -172,20 +192,26 @@ async function downloadFile(drive, fileId) {
 }
 
 // ─── Call Claude to extract project data ─────────────────────────────────────
-const CLAUDE_PROMPT = `Du får dokumenter fra et FERDIG prosjekt (tilbud, kalkulasjon, tegninger).
-Din oppgave: ekstrahere NØKKELDATA som kan brukes som referanse for fremtidige kalkulasjoner.
+const CLAUDE_PROMPT = `Du får dokumenter fra et FERDIG prosjekt hos Ferro Stålentreprenør AS:
+- Vår kalkulasjon (xlsx) — hva vi kalkulerte internt
+- Vårt tilbud (pdf) — hva vi tilbød kunden
+- Leverandør-tilbud (pdf i underfolders) — priser VI fikk fra Ruukki, Storm, Areco osv.
+- Tegninger
 
-Returner KUN gyldig JSON (ingen markdown, ingen forklaring):
+Din oppgave: ekstrahere NØKKELDATA som læringsmateriale for fremtidige kalkulasjoner.
+VIKTIG: inkluder leverandørdata og påslagslogikk — det viser HVORDAN Ferro prissetter, ikke bare sluttpris.
+
+Returner KUN gyldig JSON (ingen markdown):
 {
   "bygg": {
-    "type": "f.eks. vaskehall, lager, industribygg",
+    "type": "f.eks. vaskehall, lager, industribygg, bilskadeverksted",
     "dimensjoner": "f.eks. 30×15×5.3m",
     "bra_m2": null_eller_tall,
     "fasade_m2": null_eller_tall,
     "tak_m2": null_eller_tall,
     "lokasjon": "by/sted"
   },
-  "priser": {
+  "priser_til_kunde": {
     "stal": null_eller_tall,
     "yttervegg": null_eller_tall,
     "innervegg": null_eller_tall,
@@ -197,11 +223,27 @@ Returner KUN gyldig JSON (ingen markdown, ingen forklaring):
     "rigg_drift_pct": null_eller_tall,
     "sum_eks_mva": null_eller_tall
   },
-  "scope": "kort beskrivelse av hva Ferro leverte (f.eks. 'Stål + yttervegg + tak')",
-  "merknader": "1-2 setninger om prosjektets særtrekk"
+  "innkjop_fra_leverandorer": {
+    "stal_leverandor": "navn på leverandør (Ruukki/Storm/etc) og pris hvis kjent",
+    "stal_innkjop_kr": null_eller_tall,
+    "sandwich_leverandor": "navn og pris",
+    "sandwich_innkjop_kr": null_eller_tall,
+    "sandwich_type": "f.eks. 120mm PIR, 200mm RW",
+    "tak_leverandor": "navn og pris",
+    "tak_innkjop_kr": null_eller_tall,
+    "andre_ue": "liste over andre UE og deres priser"
+  },
+  "paaslag_beregnet": {
+    "stal_paslag": "f.eks. 1.30 (30 % påslag) — beregnet fra innkjøp vs utpris",
+    "sandwich_paslag": "f.eks. 1.15",
+    "kommentar": "kort forklaring av påslagslogikk"
+  },
+  "scope": "kort beskrivelse av hva Ferro leverte",
+  "tekniske_losninger": "nøkkelbeslutninger — f.eks. 'TRP selvbærende + EPS C80 + papp/membran tekking', 'stripefundament 600×600mm', 'stålkonstruksjon HEA140 søyler'",
+  "merknader": "1-2 setninger om prosjektets særtrekk, utfordringer, læring"
 }
 
-Bruk null for data som ikke finnes. Ikke gjett.`
+Bruk null for data som ikke finnes. Ikke gjett — men BEREGN påslag hvis både innkjøp og utpris finnes.`
 
 // ─── Parse xlsx into readable text ───────────────────────────────────────────
 function parseXlsxToText(buffer, fileName) {
@@ -272,7 +314,7 @@ async function analyzeWithClaude(projectName, files) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
-      max_tokens: 2048,
+      max_tokens: 3500,
       system: CLAUDE_PROMPT,
       messages: [{ role: 'user', content }]
     })
@@ -349,19 +391,20 @@ async function main() {
       console.log(`  📄 ${files.length} filer i prosjektet`)
 
       const picks = pickRelevantFiles(files)
-      const toAnalyze = [picks.kalk, picks.tilbud, ...picks.drawings].filter(Boolean)
+      const toAnalyze = [picks.kalk, picks.tilbud, ...picks.drawings, ...picks.supplier_tilbuds].filter(Boolean)
 
       if (toAnalyze.length === 0) {
         console.log(`  ⚠ Ingen relevante filer funnet — hopper over`)
         continue
       }
 
-      console.log(`  📥 Laster ned ${toAnalyze.length} nøkkelfiler...`)
+      console.log(`  📥 Laster ned ${toAnalyze.length} nøkkelfiler (${picks.supplier_tilbuds.length} fra leverandører)...`)
       const downloaded = []
       for (const file of toAnalyze) {
         const buf = await downloadFile(drive, file.id)
         downloaded.push({ file, buffer: buf })
-        console.log(`     · ${file.name} (${(buf.length / 1024).toFixed(0)} KB)`)
+        const label = file.category ? ` [fra ${file.category}]` : ''
+        console.log(`     · ${file.name} (${(buf.length / 1024).toFixed(0)} KB)${label}`)
       }
 
       console.log(`  🤖 Analyserer med Claude...`)

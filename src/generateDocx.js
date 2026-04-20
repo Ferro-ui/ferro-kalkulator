@@ -70,6 +70,14 @@ function priceTable(sumExMva, mva, sumInkMva) {
   return new Table({
     width: { size: 9000, type: WidthType.DXA },
     columnWidths: [6200, 2800],
+    borders: {
+      top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      insideHorizontal: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+      insideVertical: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+    },
     rows: [
       makeRow('Sum uten opsjoner eks. mva', fmtNO(sumExMva), false, false),
       makeRow('Mva (25 %)', fmtNO(mva), false, false),
@@ -85,16 +93,24 @@ function buildHeader(logoBytes) {
       new Table({
         width: { size: 9360, type: WidthType.DXA },
         columnWidths: [4680, 4680],
+        borders: {
+          top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          insideHorizontal: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+          insideVertical: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' },
+        },
         rows: [new TableRow({
           children: [
             new TableCell({
-              borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE } },
+              borders: { top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' } },
               children: [new Paragraph({
                 children: [new ImageRun({ data: logoBytes, transformation: { width: 100, height: 67 }, type: 'png' })]
               })]
             }),
             new TableCell({
-              borders: { top: { style: BorderStyle.NONE }, bottom: { style: BorderStyle.NONE }, left: { style: BorderStyle.NONE }, right: { style: BorderStyle.NONE } },
+              borders: { top: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, bottom: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, left: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' }, right: { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' } },
               verticalAlign: VerticalAlign.CENTER,
               children: [new Paragraph({
                 alignment: AlignmentType.RIGHT,
@@ -258,26 +274,26 @@ export async function generateAndDownloadDocx(data) {
         priceTable(sumExMva, mva, sumInkMva),
         gap(16),
         body('I vedleggene ligger vår beskrivelse av arbeidet. Vi ser frem til et godt samarbeid og håper budsjettet er konkurransedyktig.'),
-        gap(16),
-        rule(),
+        gap(20),
 
-        ...scopeItems,
-
-        gap(16),
-        rule(),
-
-        // Signature
-        new Paragraph({ spacing: { before: 280, after: 60 }, children: [new TextRun({ text: 'Med vennlig hilsen', size: 20, font: 'Arial' })] }),
+        // Signature — right after the closing sentence
+        new Paragraph({ spacing: { before: 0, after: 40 }, children: [new TextRun({ text: 'Med vennlig hilsen', size: 20, font: 'Arial' })] }),
         new Paragraph({ spacing: { before: 0, after: 40 }, children: [new TextRun({ text: 'Ferro Stålentreprenør AS', size: 20, bold: true, font: 'Arial', color: DARK_BLUE })] }),
-        gap(32),
+        gap(24),
         new Paragraph({
           spacing: { before: 0, after: 20 },
           border: { top: { style: BorderStyle.SINGLE, size: 4, color: GREY_LINE, space: 4 } },
           children: [new TextRun({ text: signer.name, size: 20, bold: true, font: 'Arial', color: DARK_BLUE })]
         }),
         new Paragraph({ spacing: { before: 0, after: 0 }, children: [new TextRun({ text: signer.title, size: 18, font: 'Arial', color: '666666' })] }),
-        new Paragraph({ spacing: { before: 0, after: 400 }, children: [new TextRun({ text: `Tlf: ${signer.tlf}  |  ${signer.email}`, size: 18, font: 'Arial', color: '666666' })] }),
+        new Paragraph({ spacing: { before: 0, after: 300 }, children: [new TextRun({ text: `Tlf: ${signer.tlf}  |  ${signer.email}`, size: 18, font: 'Arial', color: '666666' })] }),
 
+        rule(),
+
+        // Scope follows after signature
+        ...scopeItems,
+
+        gap(16),
         rule(),
 
         // General conditions

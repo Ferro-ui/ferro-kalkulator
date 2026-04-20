@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
+import { FERRO_LOGO_B64 } from './ferroLogo'
 import { analyzeProject } from './analyzeProject'
 import {
   fmt, fmtKr, saveProject, loadProject, clearProject,
@@ -7,12 +8,12 @@ import {
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
 const Card = ({ children, style }) => (
-  <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 14, ...style }}>
+  <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 1px 4px rgba(27,48,80,0.06)', ...style }}>
     {children}
   </div>
 )
 const Tag = ({ color, children }) => (
-  <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 20, background: color + '22', color, border: `1px solid ${color}44` }}>{children}</span>
+  <span style={{ fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 20, background: color + '18', color, border: `1px solid ${color}33` }}>{children}</span>
 )
 const Spinner = ({ size = 28 }) => (
   <div style={{ width: size, height: size, borderRadius: '50%', border: '3px solid var(--border)', borderTopColor: 'var(--accent)', animation: 'spin 0.7s linear infinite' }} />
@@ -79,18 +80,18 @@ function TilbudModal({ onClose, onGenerate, generating, generatingStatus }) {
             <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>{f.label}</label>
             <input value={kunde[f.key]} onChange={e => setKunde(p => ({ ...p, [f.key]: e.target.value }))}
               placeholder={f.placeholder}
-              style={{ width: '100%', padding: '10px 14px', fontSize: 14, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Sans',sans-serif" }} />
+              style={{ width: '100%', padding: '10px 14px', fontSize: 14, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'Inter',sans-serif" }} />
           </div>
         ))}
         <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
           <button onClick={() => onGenerate(kunde)} disabled={generating} style={{
             flex: 1, padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 10, border: 'none', cursor: generating ? 'wait' : 'pointer',
-            background: generating ? 'var(--bg-input)' : 'linear-gradient(135deg,#D45D00,#FF8C38)', color: generating ? 'var(--text-dim)' : '#fff',
-            fontFamily: "'DM Sans',sans-serif",
+            background: generating ? 'var(--bg-input)' : 'var(--accent)', color: generating ? 'var(--text-dim)' : '#fff',
+            fontFamily: "'Inter',sans-serif",
           }}>
             {generating ? (generatingStatus || 'Genererer...') : '📄 Last ned .docx'}
           </button>
-          <button onClick={onClose} style={{ padding: '13px 18px', fontSize: 14, fontWeight: 600, borderRadius: 10, border: '1px solid var(--border)', background: 'none', color: 'var(--text-dim)', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif" }}>Avbryt</button>
+          <button onClick={onClose} style={{ padding: '13px 18px', fontSize: 14, fontWeight: 600, borderRadius: 10, border: '1px solid var(--border)', background: 'none', color: 'var(--text-dim)', cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>Avbryt</button>
         </div>
       </Card>
     </div>
@@ -190,7 +191,7 @@ export default function App() {
   const fileIcons = { 'application/pdf': '📄', 'image/jpeg': '🖼', 'image/png': '🖼', 'image/webp': '🖼' }
 
   return (
-    <div style={{ minHeight: '100vh', padding: '24px 16px', maxWidth: 860, margin: '0 auto' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
 
       {/* Modals */}
       {showTilbudModal && (
@@ -202,20 +203,22 @@ export default function App() {
         />
       )}
 
+      {/* Top nav bar */}
+      <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 32px', height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 10, boxShadow: '0 1px 6px rgba(27,48,80,0.07)' }}>
+        <img src={`data:image/png;base64,${FERRO_LOGO_B64}`} alt="Ferro Stålentreprenør AS" style={{ height: 44, objectFit: 'contain' }} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          {result && <button onClick={handleReset} style={{ padding: '8px 16px', fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: 'none', color: 'var(--text-dim)', border: '1px solid var(--border)', fontFamily: "'Inter',sans-serif" }}>Nullstill</button>}
+          <button onClick={() => setShowKey(!showKey)} style={{ padding: '8px 16px', fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: apiKey ? 'var(--success-dim)' : 'var(--warning-dim)', color: apiKey ? 'var(--success)' : 'var(--warning)', border: `1px solid ${apiKey ? 'var(--success)' : 'var(--warning)'}55`, fontFamily: "'Inter',sans-serif" }}>🔑 {apiKey ? 'API OK' : 'Sett nøkkel'}</button>
+        </div>
+      </div>
+
+      {/* Page content */}
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '32px 16px' }}>
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 46, height: 46, borderRadius: 13, background: 'linear-gradient(135deg,#D45D00,#FF8C38)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 23, fontWeight: 800, color: '#fff' }}>F</div>
-          <div>
-            <h1 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em' }}>Ferro Prosjektestimat</h1>
-            <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Last opp dokumenter → AI analyserer → Prisintervall + .docx budsjettpris</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          {result && <button onClick={handleReset} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: 'none', color: 'var(--text-dim)', border: '1px solid var(--border)', fontFamily: "'DM Sans',sans-serif" }}>Nullstill</button>}
-          <button onClick={() => setShowKey(!showKey)} style={{ padding: '8px 14px', fontSize: 12, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: apiKey ? 'var(--success-dim)' : 'var(--warning-dim)', color: apiKey ? 'var(--success)' : 'var(--warning)', border: `1px solid ${apiKey ? 'var(--success)' : 'var(--warning)'}44`, fontFamily: "'DM Sans',sans-serif" }}>🔑 {apiKey ? 'API OK' : 'Sett nøkkel'}</button>
-        </div>
+      <div style={{ marginBottom: 28 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-0.02em', marginBottom: 4 }}>Prosjektestimat</h1>
+        <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>Last opp dokumenter → AI analyserer → Prisintervall + .docx budsjettpris</div>
       </div>
 
       {/* API key */}
@@ -225,15 +228,15 @@ export default function App() {
           <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>Hentes fra console.anthropic.com · Lagres kun i nettleseren</div>
           <div style={{ display: 'flex', gap: 8 }}>
             <input type="password" placeholder="sk-ant-..." value={apiKey} onChange={e => handleKeyChange(e.target.value)}
-              style={{ flex: 1, padding: '10px 14px', fontSize: 13, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Mono',monospace" }} />
-            <button onClick={() => setShowKey(false)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 600, borderRadius: 8, background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif" }}>Lagre</button>
+              style={{ flex: 1, padding: '10px 14px', fontSize: 13, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Mono', monospace" }} />
+            <button onClick={() => setShowKey(false)} style={{ padding: '10px 20px', fontSize: 13, fontWeight: 600, borderRadius: 8, background: 'var(--accent)', color: '#fff', border: 'none', cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>Lagre</button>
           </div>
         </Card>
       )}
 
       {/* Project name */}
       <input type="text" placeholder="Prosjektnavn..." value={projectName} onChange={e => setProjectName(e.target.value)}
-        style={{ width: '100%', padding: '12px 16px', fontSize: 16, fontWeight: 600, border: '1px solid var(--border)', borderRadius: 12, marginBottom: 16, background: 'var(--bg-card)', color: 'var(--text)', fontFamily: "'DM Sans',sans-serif" }} />
+        style={{ width: '100%', padding: '12px 16px', fontSize: 16, fontWeight: 600, border: '1px solid var(--border)', borderRadius: 12, marginBottom: 16, background: 'var(--bg-card)', color: 'var(--text)', fontFamily: "'Inter',sans-serif" }} />
 
       {/* Upload */}
       {!analyzing && (
@@ -268,14 +271,14 @@ export default function App() {
           <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 10 }}>Hva som er med/ikke med, type bygg, lokasjon, spesielle krav...</div>
           <textarea placeholder="Eks: Vi leverer stål, yttervegg og innervegger. Betong og graving er UE. Bygget er ca 30×15m lager i Telemark..."
             value={extraInfo} onChange={e => setExtraInfo(e.target.value)} rows={4}
-            style={{ width: '100%', padding: '10px 12px', fontSize: 13, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Sans',sans-serif", resize: 'vertical', lineHeight: 1.5 }} />
+            style={{ width: '100%', padding: '10px 12px', fontSize: 13, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'Inter',sans-serif", resize: 'vertical', lineHeight: 1.5 }} />
         </Card>
       )}
 
       {/* Analyze button */}
       {!analyzing && (
-        <button onClick={handleAnalyze} style={{ width: '100%', padding: '16px', fontSize: 16, fontWeight: 700, background: 'linear-gradient(135deg,#D45D00,#FF8C38)', color: '#fff', border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", marginBottom: 24, letterSpacing: '-0.01em' }}>
-          🤖 Analyser prosjekt med AI
+        <button onClick={handleAnalyze} style={{ width: '100%', padding: '16px', fontSize: 16, fontWeight: 700, background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: "'Inter',sans-serif", marginBottom: 24, letterSpacing: '-0.01em' }}>
+          Analyser prosjekt med AI
         </button>
       )}
 
@@ -295,8 +298,8 @@ export default function App() {
       {result && !analyzing && (
         <div style={{ animation: 'fadeUp 0.4s ease' }}>
           {/* Summary */}
-          <Card style={{ padding: '18px 20px', marginBottom: 16, borderColor: 'rgba(91,141,240,0.3)' }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--blue)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.04em' }}>AI-analyse</div>
+          <Card style={{ padding: '18px 20px', marginBottom: 16, borderColor: 'rgba(27,48,80,0.25)', borderLeftWidth: 4, borderLeftColor: 'var(--accent)' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.04em' }}>AI-analyse</div>
             <div style={{ fontSize: 14, lineHeight: 1.6, marginBottom: result.building?.dimensions ? 10 : 0 }}>{result.project_summary}</div>
             {result.building?.dimensions && (
               <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
@@ -338,29 +341,29 @@ export default function App() {
           </Card>
 
           {/* Grand total */}
-          <Card style={{ padding: '20px 24px', marginBottom: 20, background: 'linear-gradient(135deg,#1A1D25,#1F232D)' }}>
+          <Card style={{ padding: '20px 24px', marginBottom: 20, background: 'var(--accent)', borderColor: 'transparent' }}>
             <div style={{ marginBottom: 16 }}>
               {[
                 stal > 0 && { label: 'Stålkonstruksjon', lo: stal, hi: stal },
                 { label: `Arbeidsblokker (${blocks.length} poster)`, lo: totalLow, hi: totalHigh },
                 { label: `Rigg og drift (${riggPct}%)`, lo: riggLow, hi: riggHigh },
               ].filter(Boolean).map(r => (
-                <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-dim)', marginBottom: 6 }}>
+                <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'rgba(255,255,255,0.65)', marginBottom: 6 }}>
                   <span>{r.label}</span>
                   <span style={{ fontFamily: "'DM Mono',monospace" }}>{r.lo === r.hi ? fmtKr(r.lo) : `${fmt(Math.round(r.lo))} – ${fmtKr(Math.round(r.hi))}`}</span>
                 </div>
               ))}
             </div>
-            <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
-              <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 4 }}>Sum eks. mva</div>
-              <div style={{ fontSize: 26, fontWeight: 800, fontFamily: "'DM Mono',monospace", color: 'var(--accent-light)', marginBottom: 2 }}>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: 16 }}>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 4 }}>Sum eks. mva</div>
+              <div style={{ fontSize: 26, fontWeight: 800, fontFamily: "'DM Mono',monospace", color: '#fff', marginBottom: 2 }}>
                 {fmt(Math.round(grandLow))} – {fmtKr(Math.round(grandHigh))}
               </div>
-              <div style={{ fontSize: 14, color: 'var(--text-dim)', fontFamily: "'DM Mono',monospace" }}>
+              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', fontFamily: "'DM Mono',monospace" }}>
                 Ink. mva: {fmt(Math.round(grandLow*1.25))} – {fmtKr(Math.round(grandHigh*1.25))}
               </div>
-              <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 6 }}>
-                Midtpunkt: <strong style={{ color: 'var(--text)', fontFamily: "'DM Mono',monospace" }}>{fmtKr(midTotal)}</strong>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginTop: 6 }}>
+                Midtpunkt: <strong style={{ color: '#fff', fontFamily: "'DM Mono',monospace" }}>{fmtKr(midTotal)}</strong>
               </div>
             </div>
           </Card>
@@ -387,25 +390,27 @@ export default function App() {
           <div style={{ display: 'flex', gap: 10, marginBottom: 40 }}>
             <button onClick={() => setShowTilbudModal(true)} style={{
               flex: 2, padding: '15px', fontSize: 15, fontWeight: 700, borderRadius: 12, border: 'none', cursor: 'pointer',
-              background: 'linear-gradient(135deg,#D45D00,#FF8C38)', color: '#fff', fontFamily: "'DM Sans',sans-serif",
+              background: 'var(--accent)', color: '#fff', fontFamily: "'Inter',sans-serif",
             }}>
-              📄 Last ned budsjettpris (.docx)
+              Last ned budsjettpris (.docx)
             </button>
             <button onClick={() => exportSummary(result, projectName, stalPrice, riggPct)} style={{
               flex: 1, padding: '15px', fontSize: 14, fontWeight: 600, borderRadius: 12,
               border: '1px solid var(--border)', background: 'var(--bg-card)', color: 'var(--text-dim)',
-              cursor: 'pointer', fontFamily: "'DM Sans',sans-serif",
+              cursor: 'pointer', fontFamily: "'Inter',sans-serif",
             }}>
-              📄 Estimat .txt
+              Estimat .txt
             </button>
             <button onClick={handleAnalyze} style={{
               padding: '15px 18px', fontSize: 14, fontWeight: 600, borderRadius: 12,
               border: '1px solid var(--accent)', background: 'none', color: 'var(--accent)',
-              cursor: 'pointer', fontFamily: "'DM Sans',sans-serif",
-            }}>🔄</button>
+              cursor: 'pointer', fontFamily: "'Inter',sans-serif",
+            }}>&#x21BA;</button>
           </div>
         </div>
       )}
+
+      </div>{/* end page content */}
     </div>
   )
 }

@@ -10,6 +10,7 @@ import path from 'path'
 import readline from 'readline'
 import { google } from 'googleapis'
 import { authenticate } from '@google-cloud/local-auth'
+import * as XLSX from 'xlsx'
 
 const SCRIPT_DIR = path.dirname(new URL(import.meta.url).pathname)
 const ROOT = path.resolve(SCRIPT_DIR, '..')
@@ -202,6 +203,37 @@ Returner KUN gyldig JSON (ingen markdown, ingen forklaring):
 
 Bruk null for data som ikke finnes. Ikke gjett.`
 
+// ─── Parse xlsx into readable text ───────────────────────────────────────────
+function parseXlsxToText(buffer, fileName) {
+  try {
+    const wb = XLSX.read(buffer, { type: 'buffer' })
+    const lines = [`[Excel-fil: ${fileName}]`]
+
+    // Prioritize Ferro-relevant sheets first
+    const priority = ['Tilbud', 'Resultat', 'Prisoppsett']
+    const sortedSheets = [
+      ...priority.filter(n => wb.SheetNames.includes(n)),
+      ...wb.SheetNames.filter(n => !priority.includes(n))
+    ]
+
+    for (const sheetName of sortedSheets) {
+      const sheet = wb.Sheets[sheetName]
+      // Convert to CSV — preserves structure and numbers better than JSON
+      const csv = XLSX.utils.sheet_to_csv(sheet, { blankrows: false })
+
+      // Skip completely empty sheets
+      if (!csv.trim()) continue
+
+      // Limit each sheet to ~8000 chars to keep token count reasonable
+      const trimmed = csv.length > 4000 ? csv.substring(0, 4000) + '\n[...resten av arket kuttet...]' : csv
+      lines.push(`\n--- Ark: ${sheetName} ---\n${trimmed}`)
+    }
+    return lines.join('\n')
+  } catch (err) {
+    return `[Excel-fil: ${fileName} — kunne ikke parse: ${err.message}]`
+  }
+}
+
 async function analyzeWithClaude(projectName, files) {
   const content = [
     { type: 'text', text: `Analyser dette Ferro-prosjektet: "${projectName}"\nEkstrahér nøkkeldata for fremtidig referanse.` }
@@ -224,9 +256,10 @@ async function analyzeWithClaude(projectName, files) {
         type: 'image',
         source: { type: 'base64', media_type: mime, data: base64 },
       })
-    } else if (mime.includes('spreadsheet') || mime.includes('excel') || file.name.endsWith('.xlsx')) {
-      // For xlsx — skip for now (would need xlsx parser). Just note its presence.
-      content.push({ type: 'text', text: `\n[Excel-fil: ${file.name} — ${(buffer.length/1024).toFixed(0)} KB. Innholdet er ikke direkte lesbart her, men filnavnet angir kalkulasjon for prosjektet.]` })
+    } else if (mime.includes('spreadsheet') || mime.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+      // Parse xlsx to readable text (CSV) and send as text block
+      const xlsxText = parseXlsxToText(buffer, file.name)
+      content.push({ type: 'text', text: `\n--- ${file.name} ---\n${xlsxText}` })
     }
   }
 
@@ -244,6 +277,14 @@ async function analyzeWithClaude(projectName, files) {
       messages: [{ role: 'user', content }]
     })
   })
+
+  if (response.status === 429) {
+    // Rate limit — wait 65s and retry once
+    const waitSec = parseInt(response.headers.get('retry-after')) || 65
+    console.log(`  ⏳ Rate limit — venter ${waitSec}s og prøver igjen...`)
+    await new Promise(r => setTimeout(r, waitSec * 1000))
+    return analyzeWithClaude(projectName, files)  // retry
+  }
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}))
@@ -337,8 +378,9 @@ async function main() {
       saveCache(cache)
       console.log(`  ✓ Ferdig — ${analysis.scope || 'ingen scope angitt'}`)
 
-      // Small pause between projects to avoid rate limits
-      await new Promise(r => setTimeout(r, 2000))
+      // Pause between projects to avoid rate limits (30k tokens/min)
+      console.log(`  ⏳ Venter 30s før neste prosjekt (rate limit)...`)
+      await new Promise(r => setTimeout(r, 30000))
     } catch (err) {
       console.log(`  ❌ Feil: ${err.message}`)
     }

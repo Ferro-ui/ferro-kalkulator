@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+
+# Secrets (do NOT commit!)
+.env
+credentials.json
+token.json
+scripts/.cache.json

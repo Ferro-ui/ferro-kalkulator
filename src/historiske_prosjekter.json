@@ -1,0 +1,191 @@
+[
+  {
+    "navn": "Dobbel Vaskehall",
+    "driveId": "1Qg4YxGcD_EciKCv1ThfHVMnMN7be8ZOE",
+    "sist_oppdatert": "2026-04-20T07:12:40.697Z",
+    "bygg": {
+      "type": "Dobbel vaskehall (bilvask)",
+      "dimensjoner": "13.5×13.64×4.6m (mønehøyde), fri høyde 3.5m",
+      "bra_m2": 185,
+      "fasade_m2": 280,
+      "tak_m2": 185,
+      "lokasjon": "Drammen / Nordstrand / Halden (Glitra Drift AS)"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": 4,
+      "sum_eks_mva": 3777000
+    },
+    "scope": "Totalentreprise: stålkonstruksjon (galvanisert), yttervegg sandwich 120mm PIR, innervegger PIR, TRP-tak med asfaltbelegg (U=0.18), kantforsterket betonggulv 185m2, grunnarbeid/ringmur, rørlegger (vann/avløp/oljeutskiller), 4 stk foldeporter (ASSA ABLOY FD2050FCW), 3 stk ståldører, 4 stk vinduer, prosjektering stål og betong, brannkonsept",
+    "merknader": "Dobbel vaskehall med to vaskebåser (2×74.9m2) + teknisk rom (25.8m2) for Glitra Drift; tilbudet er skalerbart – ved bestilling av 3 haller samtidig gis rabatt på 250 000 kr eks. mva. Elektro, ventilasjon, bilvaskemaskin og inventar er ikke inkludert."
+  },
+  {
+    "navn": "Bussgarasje Mjåvann",
+    "driveId": "1DvjL-SpUyQsbSxkkc0KXZ7-xVv9_UjwH",
+    "sist_oppdatert": "2026-04-20T07:10:54.286Z",
+    "bygg": {
+      "type": "Bussgarasje med verksted, vaskehall og kontordel",
+      "dimensjoner": "30×66×7.5m (parapet)",
+      "bra_m2": 1980,
+      "fasade_m2": null,
+      "tak_m2": 1980,
+      "lokasjon": "Mjåvann"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": null,
+      "sum_eks_mva": null
+    },
+    "scope": "Stålkonstruksjon (fagverk) + yttervegg + tak, tegnet av IPOA AS. Inkluderer verksted, vaskehall, kontor 2 etg. og mesanin.",
+    "merknader": "Bygget har 11 bussporter langs langside, parapet på 7.5m og fagverk UK på 5.74m for garasjedel. To-etasjes kontordel (A-F akse, ca. 30×18m) med mesanin/teknisk rom i 2. etg., varmekabler i vaskehall og Acodrain-avløpssystem."
+  },
+  {
+    "navn": "Valle båtopplag as - ny hall",
+    "driveId": "15tySF0h1Lzo1kVWK8q9SjxN-Wv1RpjrK",
+    "sist_oppdatert": "2026-04-20T07:08:53.305Z",
+    "bygg": {
+      "type": "Båtopplagshal med mesanin og verksted, tilbygg mot eksisterende lagerhall",
+      "dimensjoner": "Uregelmessig planform, ca. 13.9×19.8m + 16.6×8m verkstedsdel (se tegning)",
+      "bra_m2": null,
+      "fasade_m2": 555,
+      "tak_m2": 769,
+      "lokasjon": "Stathelle (Vallekjær 34, 3967)"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": 5,
+      "sum_eks_mva": 8995000
+    },
+    "scope": "Stålkonstruksjon (inkl. hulldekker og mesanin) + yttervegger sandwich (SP200 MW mot brann, SP120 PIR øvrig) + innervegger PIR 120mm + tak TRP/EPS/mineralull U=0,13 + betongfundamenter (stripefundament 600×600mm) + dører/vinduer. Grunnarbeid og gulvstøp IKKE inkludert.",
+    "merknader": "Uregelmessig L-formet planform som frittstående tilbygg mot eksisterende lagerhall med mesaninplan (garderobe, spiserom, WC/dusj). Brannkrav mot eksisterende bygg medregnet (SP200 steinull + brannisolering stål); porter, trapper, elektro, VVS og gulvstøp er ikke inkludert i hovedpris men tilbys som opsjoner (betonggulv 150m² kr 250 000, påstøp hulldekke kr 395 000, vinduer uttrekk kr 110 000, systemvegger/himling kr 240 000)."
+  },
+  {
+    "navn": "Kaldtlager Rauland",
+    "driveId": "1dgya5fC8LRsFjijFTg-me-RIRZQz9M0n",
+    "sist_oppdatert": "2026-04-20T07:07:40.387Z",
+    "bygg": {
+      "type": "kaldtlager",
+      "dimensjoner": "15×36m, gesimshøyde 4,0m, møne 8,33m, saltak",
+      "bra_m2": 540,
+      "fasade_m2": 461,
+      "tak_m2": 624,
+      "lokasjon": "Rauland"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": 6,
+      "sum_eks_mva": 1795000
+    },
+    "scope": "Stål (produksjon + montasje) + yttervegg (uisolert trapesprofil 18W) + tak (TRP galvanisert selvbærende) + 1 stk leddheiseport 3500×3500mm. Betong, graving og fundamenter er IKKE inkludert.",
+    "merknader": "Uisolert kaldtlager dimensjonert for snølast 4,0 kN/m2 (mark) – krevende snøsone på Rauland/Hardangervidda. Tilbud datert 10.03.2026 med forbehold om stålprisøkning og force majeure (krig i Ukraina)."
+  },
+  {
+    "navn": "Sandlager",
+    "driveId": "1hxsSy-T32T2YdzZ1qfwXwAlAOMPfaX-g",
+    "sist_oppdatert": "2026-04-20T07:06:35.257Z",
+    "bygg": {
+      "type": "Sandlager (strøgruslager/garasje)",
+      "dimensjoner": "12×8m, pultak",
+      "bra_m2": 96,
+      "fasade_m2": 204,
+      "tak_m2": 96,
+      "lokasjon": "Ulefoss / Løvenskiold Fossum Kraft"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": 5,
+      "sum_eks_mva": 1190000
+    },
+    "scope": "Stål + yttervegg (sandwich 120mm PIR) + tak (TRP galvanisert + papp/membran) + 2 stk. manuelle leddporter (6×4m) + 1 stk. ståldør. Betong ikke inkludert.",
+    "merknader": "Lite sandlagerbygg (96 m²) delvis på betong legoblokk-mur. Opsjon for motoriserte leddporter: +25 800 kr eks. mva. Tilbud datert 16.03.2026 med forbehold om prisjustering på stål og sandwich."
+  },
+  {
+    "navn": "Ringsevja 22 - Ulefoss Auto",
+    "driveId": "1wfYlUqTy1eOX8d4DHQ4B-WMAsERdAi1i",
+    "sist_oppdatert": "2026-04-20T07:04:42.710Z",
+    "bygg": {
+      "type": "Autoverksted",
+      "dimensjoner": "18×15m",
+      "bra_m2": 270,
+      "fasade_m2": null,
+      "tak_m2": 270,
+      "lokasjon": "Ulefoss"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": null,
+      "sum_eks_mva": null
+    },
+    "scope": "Ukjent – Excel-kalkulasjon ikke lesbar; tegning viser stålbygg med verksted og personalfløy",
+    "merknader": "Bygget er 18×15m med verksted (213,3 m²) og en 3m dyp personalfløy langs kortside med garderobe, WC, disponibelt rom og ventasjone. Excel-filen inneholder kalkulasjonsdetaljer som ikke kunne leses."
+  },
+  {
+    "navn": "Geithus - Enkel vaskehall",
+    "driveId": "1qT2i4DMJs3osVV2cDkcGpWu0MxNnklLL",
+    "sist_oppdatert": "2026-04-20T07:03:24.393Z",
+    "bygg": {
+      "type": "vaskehall (bilvask, enkel gjennomkjøring)",
+      "dimensjoner": null,
+      "bra_m2": null,
+      "fasade_m2": null,
+      "tak_m2": null,
+      "lokasjon": "Geithus"
+    },
+    "priser": {
+      "stal": null,
+      "yttervegg": null,
+      "innervegg": null,
+      "tak": null,
+      "kran_lift": null,
+      "dorer_vinduer": null,
+      "betong": null,
+      "graving": null,
+      "rigg_drift_pct": null,
+      "sum_eks_mva": null
+    },
+    "scope": "Kun fasadetegninger og skiltpakke (Addekor) tilgjengelig – ingen kalkulasjonsdata kunne leses fra Excel-filen",
+    "merknader": "Prosjektet gjelder en enkel gjennomkjøringsvaskehall for Glitra (hall nr. 89) i Geithus. De tilgjengelige dokumentene er fasadetegninger med profileringsmateriell/skilting – ingen prisinformasjon er ekstraherbar fra vedlagt materiale."
+  }
+]

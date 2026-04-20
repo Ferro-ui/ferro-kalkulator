@@ -1,5 +1,8 @@
 // Sends project files to Claude API in batches (to avoid rate limits)
 // and merges results into one high-level price estimate.
+// Uses historiske_prosjekter.json as reference context.
+
+import historiskeProsjekter from './historiske_prosjekter.json'
 
 const MAX_BATCH_SIZE_MB = 4
 const BATCH_PAUSE_MS = 65_000
@@ -204,6 +207,39 @@ async function callClaude(apiKey, system, userContent, onStatus, retries = 2) {
   return data.content.filter(b => b.type === 'text').map(b => b.text).join('')
 }
 
+
+// ─── Build historical context ────────────────────────────────────────────────
+function buildHistoricalContext() {
+  if (!historiskeProsjekter || historiskeProsjekter.length === 0) return ''
+
+  const lines = ['\n\nFERRO REFERANSEPROSJEKTER (bruk disse som priskalibrering):']
+  historiskeProsjekter.forEach((p, i) => {
+    const bygg = p.bygg || {}
+    const priser = p.priser || {}
+    lines.push(`\n${i + 1}. ${p.navn}`)
+    if (bygg.type || bygg.dimensjoner || bygg.bra_m2) {
+      const parts = []
+      if (bygg.type) parts.push(bygg.type)
+      if (bygg.dimensjoner) parts.push(bygg.dimensjoner)
+      if (bygg.bra_m2) parts.push(`${bygg.bra_m2} m²`)
+      if (bygg.lokasjon) parts.push(bygg.lokasjon)
+      lines.push(`   Bygg: ${parts.join(', ')}`)
+    }
+    if (p.scope) lines.push(`   Scope: ${p.scope}`)
+    const priceEntries = []
+    if (priser.stal) priceEntries.push(`stål: ${priser.stal.toLocaleString('nb-NO')}`)
+    if (priser.yttervegg) priceEntries.push(`yttervegg: ${priser.yttervegg.toLocaleString('nb-NO')}`)
+    if (priser.innervegg) priceEntries.push(`innervegg: ${priser.innervegg.toLocaleString('nb-NO')}`)
+    if (priser.tak) priceEntries.push(`tak: ${priser.tak.toLocaleString('nb-NO')}`)
+    if (priser.kran_lift) priceEntries.push(`kran/lift: ${priser.kran_lift.toLocaleString('nb-NO')}`)
+    if (priser.sum_eks_mva) priceEntries.push(`SUM: ${priser.sum_eks_mva.toLocaleString('nb-NO')}`)
+    if (priceEntries.length) lines.push(`   Priser (kr): ${priceEntries.join(', ')}`)
+    if (p.merknader) lines.push(`   Merknader: ${p.merknader}`)
+  })
+  lines.push('\nBruk disse som kalibrering — men vurder hver pris ut fra DETTE prosjektets spesifikke omstendigheter.')
+  return lines.join('\n')
+}
+
 // ─── Main export ─────────────────────────────────────────────────────────────
 export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
   onStatus('Forbereder filer...')
@@ -267,10 +303,11 @@ export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
   // Merge
   onStatus(`🔀 Konsoliderer ${summaries.length} sammendrag til endelig estimat...`)
 
+  const historicalContext = buildHistoricalContext()
   const mergeText = `Her er sammendrag fra ${summaries.length} batcher fra samme prosjekt:
 
 ${summaries.map(s => `=== BATCH ${s.batchIndex} (filer: ${s.fileNames.join(', ')}) ===\n${s.summary}`).join('\n\n')}
-${extraInfo ? `\nTilleggsinformasjon fra bruker:\n${extraInfo}\n` : ''}
+${extraInfo ? `\nTilleggsinformasjon fra bruker:\n${extraInfo}\n` : ''}${historicalContext}
 Lag et helhetlig prisestimat basert på ALL informasjonen over.`
 
   const finalRaw = await callClaude(apiKey, MERGE_SYSTEM_PROMPT, [{ type: 'text', text: mergeText }], onStatus)
@@ -279,9 +316,10 @@ Lag et helhetlig prisestimat basert på ALL informasjonen over.`
 
 // ─── Single-call path ────────────────────────────────────────────────────────
 async function analyzeSingleCall(files, extraInfo, apiKey, onStatus) {
+  const historicalContext = buildHistoricalContext()
   const content = [{
     type: 'text',
-    text: `Jeg laster opp ${files.length} prosjektdokument(er) for analyse.${extraInfo ? `\n\nTilleggsinformasjon:\n${extraInfo}` : ''}\n\nAnalyser dokumentene og gi et grovt prisestimat per arbeidsblokk.`
+    text: `Jeg laster opp ${files.length} prosjektdokument(er) for analyse.${extraInfo ? `\n\nTilleggsinformasjon:\n${extraInfo}` : ''}${historicalContext}\n\nAnalyser dokumentene og gi et grovt prisestimat per arbeidsblokk.`
   }]
 
   for (let i = 0; i < files.length; i++) {

@@ -23,9 +23,23 @@ const Spinner = ({ size = 28 }) => (
 function BlockRow({ block, onChange }) {
   const color = confidenceColor(block.confidence)
   const [open, setOpen] = useState(false)
+
+  // When user changes paslag — recalc prices from base
+  const handlePaslagChange = (newPct) => {
+    const pct = parseFloat(newPct) || 0
+    const base_low = block.base_low ?? block.price_low
+    const base_high = block.base_high ?? block.price_high
+    onChange({
+      ...block,
+      paslag_pct: pct,
+      price_low: Math.round(base_low * (1 + pct / 100) / 1000) * 1000,
+      price_high: Math.round(base_high * (1 + pct / 100) / 1000) * 1000,
+    })
+  }
+
   return (
     <div style={{ borderBottom: '1px solid var(--border-light)' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 130px 130px 90px 32px', gap: 8, alignItems: 'center', padding: '12px 20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 110px 80px 80px 32px', gap: 8, alignItems: 'center', padding: '12px 20px' }}>
         <div>
           <div style={{ fontSize: 14, fontWeight: 600 }}>{block.name}</div>
           {block.basis && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2, lineHeight: 1.3 }}>{block.basis}</div>}
@@ -39,6 +53,11 @@ function BlockRow({ block, onChange }) {
           <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 2 }}>Til</div>
           <input type="number" value={block.price_high || ''} onChange={e => onChange({ ...block, price_high: parseInt(e.target.value) || 0 })}
             style={{ width: '100%', padding: '7px 10px', fontSize: 13, fontFamily: "'DM Mono',monospace", background: 'var(--bg-input)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text)', textAlign: 'right' }} />
+        </div>
+        <div>
+          <div style={{ fontSize: 10, color: 'var(--text-dim)', marginBottom: 2 }}>Påslag %</div>
+          <input type="number" value={block.paslag_pct ?? ''} onChange={e => handlePaslagChange(e.target.value)}
+            style={{ width: '100%', padding: '7px 10px', fontSize: 13, fontFamily: "'DM Mono',monospace", background: 'var(--accent-glow)', border: '1px solid var(--accent)55', borderRadius: 8, color: 'var(--accent)', textAlign: 'right', fontWeight: 600 }} />
         </div>
         <Tag color={color}>{block.confidence || '?'}</Tag>
         <button onClick={() => setOpen(!open)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: 'var(--text-dim)', transition: 'transform 0.2s', transform: open ? 'rotate(90deg)' : 'none' }}>›</button>
@@ -154,7 +173,19 @@ export default function App() {
     try {
       const res = await analyzeProject(files, extraInfo, apiKey, setStatus)
       setResult(res)
-      setBlocks(res.blocks?.filter(b => b.included) || [])
+      // Store base prices (before paslag) so user can adjust paslag and we recalc
+      const enrichedBlocks = (res.blocks || [])
+        .filter(b => b.included)
+        .map(b => {
+          const pct = b.paslag_pct ?? 15
+          return {
+            ...b,
+            paslag_pct: pct,
+            base_low: Math.round((b.price_low || 0) / (1 + pct / 100)),
+            base_high: Math.round((b.price_high || 0) / (1 + pct / 100)),
+          }
+        })
+      setBlocks(enrichedBlocks)
       setRiggPct(res.recommended_rigg_pct || 8)
     } catch (e) { setError(e.message) }
     finally { setAnalyzing(false); setStatus('') }
@@ -324,8 +355,8 @@ export default function App() {
           </Card>
 
           {/* Column headers */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 130px 130px 90px 32px', gap: 8, padding: '8px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            <span>Arbeidsblokk</span><span style={{ textAlign: 'right' }}>Fra</span><span style={{ textAlign: 'right' }}>Til</span><span>Sikkerhet</span><span />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 110px 110px 80px 80px 32px', gap: 8, padding: '8px 20px', fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <span>Arbeidsblokk</span><span style={{ textAlign: 'right' }}>Fra</span><span style={{ textAlign: 'right' }}>Til</span><span style={{ textAlign: 'right' }}>Påslag %</span><span>Sikkerhet</span><span />
           </div>
 
           {/* Blocks */}

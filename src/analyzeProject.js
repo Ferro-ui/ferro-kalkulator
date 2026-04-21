@@ -32,19 +32,33 @@ ARBEIDSBLOKKER du skal vurdere (kun de som er relevante for dette prosjektet):
 
 KRITISK: Returner KUN gyldig JSON. Ingen tekst før/etter. Ingen markdown blokker. Starter med { slutter med }.
 
-SVARSFORMAT:
+SVARSFORMAT (hold deg KORT — maks 2 setninger per tekstfelt):
 {
-  "project_summary": "2-3 setninger om prosjektet",
-  "building": { "type": "...", "size_m2": null, "dimensions": "...", "location": "..." },
+  "project_summary": "MAKS 2 setninger om prosjektet",
+  "building": { "type": "kort", "size_m2": null, "dimensions": "kort", "location": "kort" },
   "blocks": [
     { "id": "yttervegg", "name": "Ytterveggselementer", "included": true,
       "price_low": 180000, "price_high": 240000, "confidence": "lav|middels|høy",
-      "basis": "...", "assumptions": ["..."], "missing_info": ["..."] }
+      "paslag_pct": 15,
+      "basis": "MAKS 1-2 setninger — hvilket historisk prosjekt brukt som ref + beregning",
+      "assumptions": ["maks 3 punkter, hver maks 10 ord"],
+      "missing_info": ["maks 2 punkter, hver maks 10 ord"] }
   ],
   "total_low": 0, "total_high": 0,
-  "exclusions": ["..."], "warnings": ["..."],
+  "exclusions": ["kort"], "warnings": ["kort"],
   "recommended_rigg_pct": 8
-}`
+}
+
+KRITISK: Vær KONSIS. Ingen lange forklaringer. Detaljene kan brukeren spørre om senere.
+
+PÅSLAG — sett paslag_pct per blokk basert på Ferro-historikk:
+- yttervegg/innervegg/tak/dorer_vinduer: 15-20%
+- stål: 25-35% (hvis tatt med)
+- kran_lift: 10-15% (UE-tungt)
+- betong: 10-15% (UE)
+- graving: 10% (UE)
+- andre: 15% default
+Prisene (price_low/price_high) SKAL allerede inkludere påslag. paslag_pct er informativ.`
 
 const BATCH_SUMMARY_PROMPT = `Du er en erfaren kalkulatør hos Ferro Stålentreprenør AS. Du mottar NOEN dokumenter fra et større prosjekt (ikke alle). Din oppgave er å ekstrahere RELEVANTE FAKTA for senere kalkulasjon.
 
@@ -85,19 +99,33 @@ ARBEIDSBLOKKER (kun relevante for dette prosjektet):
 
 KRITISK: Returner KUN gyldig JSON. Ingen markdown. Starter med { slutter med }.
 
-SVARSFORMAT:
+SVARSFORMAT (hold deg KORT — maks 2 setninger per tekstfelt):
 {
-  "project_summary": "2-3 setninger om prosjektet",
-  "building": { "type": "...", "size_m2": null, "dimensions": "...", "location": "..." },
+  "project_summary": "MAKS 2 setninger om prosjektet",
+  "building": { "type": "kort", "size_m2": null, "dimensions": "kort", "location": "kort" },
   "blocks": [
     { "id": "yttervegg", "name": "Ytterveggselementer", "included": true,
       "price_low": 180000, "price_high": 240000, "confidence": "lav|middels|høy",
-      "basis": "...", "assumptions": ["..."], "missing_info": ["..."] }
+      "paslag_pct": 15,
+      "basis": "MAKS 1-2 setninger — hvilket historisk prosjekt brukt som ref + beregning",
+      "assumptions": ["maks 3 punkter, hver maks 10 ord"],
+      "missing_info": ["maks 2 punkter, hver maks 10 ord"] }
   ],
   "total_low": 0, "total_high": 0,
-  "exclusions": ["..."], "warnings": ["..."],
+  "exclusions": ["kort"], "warnings": ["kort"],
   "recommended_rigg_pct": 8
-}`
+}
+
+KRITISK: Vær KONSIS. Ingen lange forklaringer. Detaljene kan brukeren spørre om senere.
+
+PÅSLAG — sett paslag_pct per blokk basert på Ferro-historikk:
+- yttervegg/innervegg/tak/dorer_vinduer: 15-20%
+- stål: 25-35% (hvis tatt med)
+- kran_lift: 10-15% (UE-tungt)
+- betong: 10-15% (UE)
+- graving: 10% (UE)
+- andre: 15% default
+Prisene (price_low/price_high) SKAL allerede inkludere påslag. paslag_pct er informativ.`
 
 // ─── File handling ───────────────────────────────────────────────────────────
 async function fileToContent(file) {
@@ -183,7 +211,7 @@ async function callClaude(apiKey, system, userContent, onStatus, retries = 2) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
-      max_tokens: 4096,
+      max_tokens: 8192,
       system,
       messages: [{ role: 'user', content: userContent }]
     })

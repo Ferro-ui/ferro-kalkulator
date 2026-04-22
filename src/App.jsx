@@ -3,7 +3,8 @@ import { FERRO_LOGO_B64 } from './ferroLogo'
 import { analyzeProject } from './analyzeProject'
 import {
   fmt, fmtKr, saveProject, loadProject, clearProject,
-  saveApiKey, loadApiKey, confidenceColor, exportSummary
+  saveApiKey, loadApiKey, confidenceColor, exportSummary,
+  saveSigner, loadSigner
 } from './utils'
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -85,25 +86,54 @@ function BlockRow({ block, onChange }) {
 // ─── Tilbudsbrev modal ────────────────────────────────────────────────────────
 function TilbudModal({ onClose, onGenerate, generating, generatingStatus }) {
   const [kunde, setKunde] = useState({ firma: '', kontakt: '', adresse: '' })
+  const [signer, setSigner] = useState(loadSigner)
+
+  const handleGenerate = () => {
+    // Save signer to localStorage for next time
+    saveSigner(signer)
+    onGenerate(kunde, signer)
+  }
+
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16 }}>
-      <Card style={{ width: '100%', maxWidth: 500, padding: '28px 28px', animation: 'fadeUp 0.3s ease' }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16, overflowY: 'auto' }}>
+      <Card style={{ width: '100%', maxWidth: 500, padding: '28px 28px', animation: 'fadeUp 0.3s ease', margin: 'auto' }}>
         <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 6 }}>Last ned budsjettpris (.docx)</div>
-        <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 24 }}>Fyll inn kundedata — resten henter AI fra analysen</div>
+        <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 20 }}>Fyll inn kundedata og bekreft signatur</div>
+
+        {/* ── Kunde section ── */}
+        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10, marginTop: 4 }}>Kunde</div>
         {[
           { label: 'Firma / kunde', key: 'firma', placeholder: 'AS Eksempel' },
           { label: 'Kontaktperson', key: 'kontakt', placeholder: 'Ola Nordmann' },
           { label: 'Adresse', key: 'adresse', placeholder: 'Eksempelveien 1, 3800 Bø' },
         ].map(f => (
-          <div key={f.key} style={{ marginBottom: 14 }}>
+          <div key={f.key} style={{ marginBottom: 12 }}>
             <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>{f.label}</label>
             <input value={kunde[f.key]} onChange={e => setKunde(p => ({ ...p, [f.key]: e.target.value }))}
               placeholder={f.placeholder}
               style={{ width: '100%', padding: '10px 14px', fontSize: 14, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'Inter',sans-serif" }} />
           </div>
         ))}
-        <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
-          <button onClick={() => onGenerate(kunde)} disabled={generating} style={{
+
+        {/* ── Signatur section ── */}
+        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 18, marginBottom: 10 }}>Signatur</div>
+        {[
+          { label: 'Navn', key: 'name', placeholder: 'Marian Mychko' },
+          { label: 'Stilling', key: 'title', placeholder: 'Kalkulatør' },
+          { label: 'Telefon', key: 'tlf', placeholder: '91 92 36 26' },
+          { label: 'E-post', key: 'email', placeholder: 'marian@ferrostal.no' },
+        ].map(f => (
+          <div key={f.key} style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>{f.label}</label>
+            <input value={signer[f.key] || ''} onChange={e => setSigner(p => ({ ...p, [f.key]: e.target.value }))}
+              placeholder={f.placeholder}
+              style={{ width: '100%', padding: '10px 14px', fontSize: 14, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'Inter',sans-serif" }} />
+          </div>
+        ))}
+        <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2, marginBottom: 8, fontStyle: 'italic' }}>Lagres lokalt for neste gang</div>
+
+        <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+          <button onClick={handleGenerate} disabled={generating} style={{
             flex: 1, padding: '13px', fontSize: 14, fontWeight: 700, borderRadius: 10, border: 'none', cursor: generating ? 'wait' : 'pointer',
             background: generating ? 'var(--bg-input)' : 'var(--accent)', color: generating ? 'var(--text-dim)' : '#fff',
             fontFamily: "'Inter',sans-serif",
@@ -199,11 +229,11 @@ export default function App() {
     }
   }
 
-  const handleGenerateBrev = async (kunde) => {
+  const handleGenerateBrev = async (kunde, signer) => {
     setGeneratingBrev(true); setBrevStatus('Genererer .docx...')
     try {
       const { generateAndDownloadDocx } = await import('./generateDocx.js')
-      await generateAndDownloadDocx({ projectName, result, blocks, stalPrice, riggPct, kunde })
+      await generateAndDownloadDocx({ projectName, result, blocks, stalPrice, riggPct, kunde, signer })
       setShowTilbudModal(false)
     } catch (e) {
       setError('docx feil: ' + e.message)

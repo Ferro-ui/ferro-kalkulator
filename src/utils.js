@@ -1,5 +1,13 @@
 const STORAGE_KEY = 'ferro_project_v2'
 const API_KEY_STORAGE = 'ferro_anthropic_key'
+const SIGNER_STORAGE = 'ferro_signer'
+
+const DEFAULT_SIGNER = {
+  name: 'Marian Mychko',
+  title: 'Kalkulatør',
+  tlf: '91 92 36 26',
+  email: 'marian@ferrostal.no',
+}
 
 export const fmt = (n) => n == null ? '–' : Math.round(n).toLocaleString('nb-NO')
 export const fmtKr = (n) => fmt(n) + ' kr'
@@ -25,6 +33,17 @@ export function saveApiKey(key) {
 
 export function loadApiKey() {
   try { return localStorage.getItem(API_KEY_STORAGE) || '' } catch { return '' }
+}
+
+export function saveSigner(signer) {
+  try { localStorage.setItem(SIGNER_STORAGE, JSON.stringify(signer)) } catch {}
+}
+
+export function loadSigner() {
+  try {
+    const raw = localStorage.getItem(SIGNER_STORAGE)
+    return raw ? { ...DEFAULT_SIGNER, ...JSON.parse(raw) } : { ...DEFAULT_SIGNER }
+  } catch { return { ...DEFAULT_SIGNER } }
 }
 
 // Confidence label

@@ -155,10 +155,11 @@ function buildFooter() {
 
 // ── Main export ───────────────────────────────────────────────────────────────
 export async function generateAndDownloadDocx(data) {
+  const DEFAULT_SIGNER = { name: 'Marian Mychko', title: 'Kalkulatør', tlf: '91 92 36 26', email: 'marian@ferrostal.no' }
   const {
     projectName, result, blocks, stalPrice, riggPct, kunde,
-    signer = { name: 'Marian Mychko', title: 'Kalkulatør', tlf: '91 92 36 26', email: 'marian@ferrostal.no' }
   } = data
+  const signer = { ...DEFAULT_SIGNER, ...(data.signer || {}) }
 
   // Decode logo from base64
   const logoBytes = Uint8Array.from(atob(FERRO_LOGO_B64), c => c.charCodeAt(0))

@@ -8,6 +8,40 @@ import {
 } from './utils'
 import { t, getLang, setLang } from './translations'
 
+// Detect file type by name — helpful default when user uploads many files
+function detectFileType(name) {
+  const n = name.toLowerCase()
+  if (n.includes('tilbud') || n.includes('pristilbud') || n.includes('tilbudsbrev')) {
+    return 'supplier_tilbud'
+  }
+  if (n.match(/\b(ark|a20|a30|a40|a41|plan|snitt|fasad|tegning|drawing)\b/)) {
+    return 'drawing'
+  }
+  if (n.endsWith('.xlsx') || n.endsWith('.xls')) {
+    return 'kalk'
+  }
+  return 'other'
+}
+
+const FILE_TYPE_LABELS = {
+  nb: {
+    drawing: 'Tegning',
+    supplier_tilbud: 'Leverandør-tilbud',
+    our_tilbud: 'Vårt tilbud',
+    kalk: 'Kalkulasjon',
+    reference: 'Referanse',
+    other: 'Annet',
+  },
+  uk: {
+    drawing: 'Креслення',
+    supplier_tilbud: 'Тендер постачальника',
+    our_tilbud: 'Наш тендер',
+    kalk: 'Калькуляція',
+    reference: 'Референс',
+    other: 'Інше',
+  },
+}
+
 // ─── helpers ─────────────────────────────────────────────────────────────────
 const Card = ({ children, style }) => (
   <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, boxShadow: '0 1px 4px rgba(27,48,80,0.06)', ...style }}>
@@ -241,12 +275,19 @@ export default function App() {
 
   const addFiles = useCallback((newFiles) => {
     setFiles(prev => {
-      const existing = new Set(prev.map(f => f.name + f.size))
-      return [...prev, ...Array.from(newFiles).filter(f => !existing.has(f.name + f.size))]
+      const existing = new Set(prev.map(f => f.file.name + f.file.size))
+      return [...prev, ...Array.from(newFiles)
+        .filter(f => !existing.has(f.name + f.size))
+        .map(f => ({ file: f, fileType: detectFileType(f.name) }))
+      ]
     })
   }, [])
 
   const onDrop = (e) => { e.preventDefault(); setDragOver(false); addFiles(e.dataTransfer.files) }
+
+  const setFileType = (idx, fileType) => {
+    setFiles(prev => prev.map((f, i) => i === idx ? { ...f, fileType } : f))
+  }
 
   const handleAnalyze = async () => {
     if (!apiKey) { setShowKey(true); return }
@@ -368,15 +409,32 @@ export default function App() {
             <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{t('uploadSubtitle')}</div>
           </div>
           {files.length > 0 && (
-            <div style={{ padding: '0 16px 12px', display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {files.map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: 'var(--bg-input)', borderRadius: 8, fontSize: 12, border: '1px solid var(--border)' }}>
-                  <span>{fileIcons[f.type] || '📎'}</span>
-                  <span style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
-                  <span style={{ color: 'var(--text-dim)' }}>({(f.size/1024/1024).toFixed(1)}M)</span>
-                  <button onClick={() => setFiles(p => p.filter((_,j) => j!==i))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', fontSize: 14, padding: '0 2px' }}>×</button>
-                </div>
-              ))}
+            <div style={{ padding: '0 16px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {files.map((f, i) => {
+                const typeLabels = FILE_TYPE_LABELS[getLang()] || FILE_TYPE_LABELS.nb
+                const typeColor = {
+                  supplier_tilbud: 'var(--success)',
+                  drawing: 'var(--accent)',
+                  kalk: 'var(--warning)',
+                  our_tilbud: 'var(--accent)',
+                  reference: 'var(--text-dim)',
+                  other: 'var(--text-dim)',
+                }[f.fileType] || 'var(--text-dim)'
+                return (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'var(--bg-input)', borderRadius: 8, fontSize: 12, border: '1px solid var(--border)' }}>
+                    <span>{fileIcons[f.file.type] || '📎'}</span>
+                    <span style={{ flex: 1, maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 500 }}>{f.file.name}</span>
+                    <span style={{ color: 'var(--text-dim)', fontSize: 11 }}>{(f.file.size/1024/1024).toFixed(1)}M</span>
+                    <select value={f.fileType} onChange={e => setFileType(i, e.target.value)}
+                      style={{ padding: '3px 6px', fontSize: 11, fontWeight: 600, border: `1px solid ${typeColor}55`, borderRadius: 6, background: typeColor + '15', color: typeColor, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>
+                      {Object.entries(typeLabels).map(([key, label]) => (
+                        <option key={key} value={key}>{label}</option>
+                      ))}
+                    </select>
+                    <button onClick={() => setFiles(p => p.filter((_,j) => j!==i))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', fontSize: 16, padding: '0 4px' }}>×</button>
+                  </div>
+                )
+              })}
             </div>
           )}
         </Card>

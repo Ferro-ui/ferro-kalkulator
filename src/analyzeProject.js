@@ -32,6 +32,17 @@ ARBEIDSBLOKKER du skal vurdere (kun de som er relevante for dette prosjektet):
 
 KRITISK: Returner KUN gyldig JSON. Ingen tekst før/etter. Ingen markdown blokker. Starter med { slutter med }.
 
+FILTYPER — hver fil har en etikett i format [TYPE] filnavn:
+- [TEGNING] — arkitekttegning, bruk for å finne mål og scope (ikke pris)
+- [TILBUD FRA LEVERANDØR] — innkjøpspris fra leverandør (Ruukki, Storm, Crawford osv.).
+  VIKTIG: Dette er det VI betaler. Legg til påslag 15-35% for prisen TIL kunde.
+- [VÅRT TILBUD] — det vi allerede har tilbudt en kunde. Bruk som referanse for påslagslogikk.
+- [KALKULASJON] — vår interne kalkulasjon (xlsx). Inneholder ofte sluttpriser.
+- [REFERANSE] — generell dokumentasjon, tidligere prosjekter, etc.
+- [DOKUMENT] — standard dokument uten spesifikk rolle.
+
+Hvis du ser [TILBUD FRA LEVERANDØR], bruk denne prisen som basis for innkjøp, og legg til påslag per blokk når du setter price_low/price_high for kunden.
+
 SVARSFORMAT (hold deg KORT — maks 2 setninger per tekstfelt):
 {
   "project_summary": "MAKS 2 setninger om prosjektet",
@@ -200,31 +211,43 @@ function extractJSON(text) {
 }
 
 // ─── Batching logic ──────────────────────────────────────────────────────────
-function splitIntoBatches(files) {
+function splitIntoBatches(wrappedFiles) {
   const batches = []
   let current = []
   let currentSize = 0
 
-  const sorted = [...files].sort((a, b) => b.size - a.size)
+  const sorted = [...wrappedFiles].sort((a, b) => b.file.size - a.file.size)
 
-  for (const file of sorted) {
-    const sizeMB = file.size / 1024 / 1024
+  for (const wrapped of sorted) {
+    const sizeMB = wrapped.file.size / 1024 / 1024
     if (sizeMB > MAX_BATCH_SIZE_MB) {
       if (current.length) { batches.push(current); current = []; currentSize = 0 }
-      batches.push([file])
+      batches.push([wrapped])
       continue
     }
     if (currentSize + sizeMB > MAX_BATCH_SIZE_MB && current.length > 0) {
       batches.push(current)
-      current = [file]
+      current = [wrapped]
       currentSize = sizeMB
     } else {
-      current.push(file)
+      current.push(wrapped)
       currentSize += sizeMB
     }
   }
   if (current.length) batches.push(current)
   return batches
+}
+
+// File type label for AI — tells it how to interpret the file
+function fileTypeLabel(type) {
+  return {
+    drawing: 'TEGNING',
+    supplier_tilbud: 'TILBUD FRA LEVERANDØR (innkjøpspris — må ha påslag for kunde)',
+    our_tilbud: 'VÅRT TILBUD',
+    kalk: 'KALKULASJON',
+    reference: 'REFERANSE',
+    other: 'DOKUMENT',
+  }[type] || 'DOKUMENT'
 }
 
 // ─── API call with rate-limit retry ──────────────────────────────────────────
@@ -355,18 +378,21 @@ function buildHistoricalContext() {
 }
 
 // ─── Main export ─────────────────────────────────────────────────────────────
-export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
+export async function analyzeProject(wrappedFiles, extraInfo, apiKey, onStatus) {
   onStatus('Forbereder filer...')
 
-  const totalMB = files.reduce((s, f) => s + f.size, 0) / 1024 / 1024
-  const useBatching = totalMB > SINGLE_CALL_LIMIT_MB && files.length > 1
+  // Support both old format (File[]) and new ({file, fileType}[])
+  const normalized = wrappedFiles.map(f => f.file ? f : { file: f, fileType: 'other' })
+
+  const totalMB = normalized.reduce((s, w) => s + w.file.size, 0) / 1024 / 1024
+  const useBatching = totalMB > SINGLE_CALL_LIMIT_MB && normalized.length > 1
 
   if (!useBatching) {
-    return await analyzeSingleCall(files, extraInfo, apiKey, onStatus)
+    return await analyzeSingleCall(normalized, extraInfo, apiKey, onStatus)
   }
 
   // Batched analysis
-  const batches = splitIntoBatches(files)
+  const batches = splitIntoBatches(normalized)
   onStatus(`📦 Stort prosjekt (${totalMB.toFixed(1)} MB) — deler opp i ${batches.length} batcher`)
   await sleep(1200)
 
@@ -374,7 +400,7 @@ export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
 
   for (let i = 0; i < batches.length; i++) {
     const batch = batches[i]
-    const batchMB = batch.reduce((s, f) => s + f.size, 0) / 1024 / 1024
+    const batchMB = batch.reduce((s, w) => s + w.file.size, 0) / 1024 / 1024
 
     onStatus(`Batch ${i + 1}/${batches.length}: leser ${batch.length} fil(er) (${batchMB.toFixed(1)} MB)...`)
 
@@ -383,7 +409,8 @@ export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
       text: `Dette er batch ${i + 1} av ${batches.length} fra samme prosjekt. Ekstrahér fakta som kan brukes til kalkulasjon.`
     }]
 
-    for (const file of batch) {
+    for (const wrapped of batch) {
+      const file = wrapped.file
       const mime = file.type || ''
       let block
       if (mime === 'application/pdf' || mime.startsWith('image/')) {
@@ -392,7 +419,7 @@ export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
         block = await textFileToContent(file)
       }
       if (block) {
-        content.push({ type: 'text', text: `\n--- Dokument: ${file.name} ---` })
+        content.push({ type: 'text', text: `\n--- [${fileTypeLabel(wrapped.fileType)}] ${file.name} ---` })
         content.push(block)
       }
     }
@@ -401,7 +428,7 @@ export async function analyzeProject(files, extraInfo, apiKey, onStatus) {
     const rawText = await callClaude(apiKey, BATCH_SUMMARY_PROMPT, content, onStatus)
     summaries.push({
       batchIndex: i + 1,
-      fileNames: batch.map(f => f.name),
+      fileNames: batch.map(w => w.file.name),
       summary: extractJSON(rawText)
     })
 
@@ -429,16 +456,17 @@ Lag et helhetlig prisestimat basert på ALL informasjonen over.`
 }
 
 // ─── Single-call path ────────────────────────────────────────────────────────
-async function analyzeSingleCall(files, extraInfo, apiKey, onStatus) {
+async function analyzeSingleCall(wrappedFiles, extraInfo, apiKey, onStatus) {
   const historicalContext = buildHistoricalContext()
   const content = [{
     type: 'text',
-    text: `Jeg laster opp ${files.length} prosjektdokument(er) for analyse.${extraInfo ? `\n\nTilleggsinformasjon:\n${extraInfo}` : ''}${historicalContext}\n\nAnalyser dokumentene og gi et grovt prisestimat per arbeidsblokk.`
+    text: `Jeg laster opp ${wrappedFiles.length} prosjektdokument(er) for analyse.${extraInfo ? `\n\nTilleggsinformasjon:\n${extraInfo}` : ''}${historicalContext}\n\nAnalyser dokumentene og gi et grovt prisestimat per arbeidsblokk.`
   }]
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i]
-    onStatus(`Leser fil ${i + 1}/${files.length}: ${file.name}`)
+  for (let i = 0; i < wrappedFiles.length; i++) {
+    const wrapped = wrappedFiles[i]
+    const file = wrapped.file
+    onStatus(`Leser fil ${i + 1}/${wrappedFiles.length}: ${file.name}`)
     const mime = file.type || ''
     let block
     if (mime === 'application/pdf' || mime.startsWith('image/')) {
@@ -447,7 +475,7 @@ async function analyzeSingleCall(files, extraInfo, apiKey, onStatus) {
       block = await textFileToContent(file)
     }
     if (block) {
-      content.push({ type: 'text', text: `\n--- Dokument: ${file.name} ---` })
+      content.push({ type: 'text', text: `\n--- [${fileTypeLabel(wrapped.fileType)}] ${file.name} ---` })
       content.push(block)
     }
   }

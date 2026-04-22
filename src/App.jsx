@@ -84,15 +84,26 @@ function BlockRow({ block, onChange }) {
 }
 
 // ─── Tilbudsbrev modal ────────────────────────────────────────────────────────
-function TilbudModal({ onClose, onGenerate, generating, generatingStatus }) {
+function TilbudModal({ onClose, onGenerate, generating, generatingStatus, aiForutsetninger }) {
   const [kunde, setKunde] = useState({ firma: '', kontakt: '', adresse: '' })
   const [signer, setSigner] = useState(loadSigner)
 
+  // Forutsetninger: start with AI's values if available, else defaults
+  const [forutsetninger, setForutsetninger] = useState(() => ({
+    u_verdi_tak: aiForutsetninger?.u_verdi_tak ?? 0.18,
+    u_verdi_vegg: aiForutsetninger?.u_verdi_vegg ?? 0.18,
+    u_verdi_glass: aiForutsetninger?.u_verdi_glass ?? 1.2,
+    tiltaksklasse: aiForutsetninger?.tiltaksklasse ?? '2',
+    bruddgrense_kn_m2: aiForutsetninger?.bruddgrense_kn_m2 ?? 250,
+    gyldighet_dager: aiForutsetninger?.gyldighet_dager ?? 14,
+  }))
+
   const handleGenerate = () => {
-    // Save signer to localStorage for next time
     saveSigner(signer)
-    onGenerate(kunde, signer)
+    onGenerate(kunde, signer, forutsetninger)
   }
+
+  const updF = (key, val) => setForutsetninger(p => ({ ...p, [key]: val }))
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16, overflowY: 'auto' }}>
@@ -131,6 +142,46 @@ function TilbudModal({ onClose, onGenerate, generating, generatingStatus }) {
           </div>
         ))}
         <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2, marginBottom: 8, fontStyle: 'italic' }}>Lagres lokalt for neste gang</div>
+
+        {/* ── Tekniske forutsetninger section ── */}
+        <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 18, marginBottom: 10 }}>Tekniske forutsetninger</div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+          {[
+            { label: 'U-verdi tak', key: 'u_verdi_tak', step: 0.01 },
+            { label: 'U-verdi vegg', key: 'u_verdi_vegg', step: 0.01 },
+            { label: 'U-verdi glass', key: 'u_verdi_glass', step: 0.1 },
+          ].map(fld => (
+            <div key={fld.key}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 4 }}>{fld.label}</label>
+              <input type="number" step={fld.step} value={forutsetninger[fld.key] ?? ''}
+                onChange={e => updF(fld.key, e.target.value === '' ? null : parseFloat(e.target.value))}
+                placeholder="–"
+                style={{ width: '100%', padding: '8px 10px', fontSize: 13, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Mono',monospace", textAlign: 'right' }} />
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 4 }}>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 4 }}>Tiltaksklasse</label>
+            <input type="text" value={forutsetninger.tiltaksklasse} onChange={e => updF('tiltaksklasse', e.target.value)}
+              style={{ width: '100%', padding: '8px 10px', fontSize: 13, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Mono',monospace", textAlign: 'right' }} />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 4 }}>Bruddgrense kN/m²</label>
+            <input type="number" value={forutsetninger.bruddgrense_kn_m2} onChange={e => updF('bruddgrense_kn_m2', parseInt(e.target.value) || 0)}
+              style={{ width: '100%', padding: '8px 10px', fontSize: 13, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Mono',monospace", textAlign: 'right' }} />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 4 }}>Gyldighet (dager)</label>
+            <input type="number" value={forutsetninger.gyldighet_dager} onChange={e => updF('gyldighet_dager', parseInt(e.target.value) || 14)}
+              style={{ width: '100%', padding: '8px 10px', fontSize: 13, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'DM Mono',monospace", textAlign: 'right' }} />
+          </div>
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 8, fontStyle: 'italic' }}>
+          La U-verdi stå tom for uisolerte bygg
+        </div>
 
         <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
           <button onClick={handleGenerate} disabled={generating} style={{
@@ -229,11 +280,11 @@ export default function App() {
     }
   }
 
-  const handleGenerateBrev = async (kunde, signer) => {
+  const handleGenerateBrev = async (kunde, signer, forutsetninger) => {
     setGeneratingBrev(true); setBrevStatus('Genererer .docx...')
     try {
       const { generateAndDownloadDocx } = await import('./generateDocx.js')
-      await generateAndDownloadDocx({ projectName, result, blocks, stalPrice, riggPct, kunde, signer })
+      await generateAndDownloadDocx({ projectName, result, blocks, stalPrice, riggPct, kunde, signer, forutsetninger })
       setShowTilbudModal(false)
     } catch (e) {
       setError('docx feil: ' + e.message)
@@ -261,6 +312,7 @@ export default function App() {
           onGenerate={handleGenerateBrev}
           generating={generatingBrev}
           generatingStatus={brevStatus}
+          aiForutsetninger={result?.forutsetninger}
         />
       )}
 

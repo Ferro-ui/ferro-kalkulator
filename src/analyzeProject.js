@@ -46,7 +46,15 @@ SVARSFORMAT (hold deg KORT — maks 2 setninger per tekstfelt):
   ],
   "total_low": 0, "total_high": 0,
   "exclusions": ["kort"], "warnings": ["kort"],
-  "recommended_rigg_pct": 8
+  "recommended_rigg_pct": 8,
+  "forutsetninger": {
+    "u_verdi_tak": 0.18,
+    "u_verdi_vegg": 0.18,
+    "u_verdi_glass": 1.2,
+    "tiltaksklasse": "2",
+    "bruddgrense_kn_m2": 250,
+    "gyldighet_dager": 14
+  }
 }
 
 KRITISK: Vær KONSIS. Ingen lange forklaringer. Detaljene kan brukeren spørre om senere.
@@ -58,7 +66,14 @@ PÅSLAG — sett paslag_pct per blokk basert på Ferro-historikk:
 - betong: 10-15% (UE)
 - graving: 10% (UE)
 - andre: 15% default
-Prisene (price_low/price_high) SKAL allerede inkludere påslag. paslag_pct er informativ.`
+Prisene (price_low/price_high) SKAL allerede inkludere påslag. paslag_pct er informativ.
+
+FORUTSETNINGER — vurder per prosjekt basert på byggtype:
+- Oppvarmet bygg (butikk, verksted, kontor, vaskehall): U-verdi tak/vegg 0.18, glass 1.2
+- Uoppvarmet (kaldtlager, båtopplag, sandlager): U-verdi null (uisolert) eller 0.22-0.30
+- Tiltaksklasse: "1" for små enkle bygg, "2" for vanlige, "3" for komplekse
+- Bruddgrense vanligvis 250 kN/m², men kan være 200-400 avhengig av grunnforhold
+- Gyldighet: 14 dager default, 30 for større/komplekse prosjekter`
 
 const BATCH_SUMMARY_PROMPT = `Du er en erfaren kalkulatør hos Ferro Stålentreprenør AS. Du mottar NOEN dokumenter fra et større prosjekt (ikke alle). Din oppgave er å ekstrahere RELEVANTE FAKTA for senere kalkulasjon.
 
@@ -113,7 +128,15 @@ SVARSFORMAT (hold deg KORT — maks 2 setninger per tekstfelt):
   ],
   "total_low": 0, "total_high": 0,
   "exclusions": ["kort"], "warnings": ["kort"],
-  "recommended_rigg_pct": 8
+  "recommended_rigg_pct": 8,
+  "forutsetninger": {
+    "u_verdi_tak": 0.18,
+    "u_verdi_vegg": 0.18,
+    "u_verdi_glass": 1.2,
+    "tiltaksklasse": "2",
+    "bruddgrense_kn_m2": 250,
+    "gyldighet_dager": 14
+  }
 }
 
 KRITISK: Vær KONSIS. Ingen lange forklaringer. Detaljene kan brukeren spørre om senere.
@@ -125,7 +148,14 @@ PÅSLAG — sett paslag_pct per blokk basert på Ferro-historikk:
 - betong: 10-15% (UE)
 - graving: 10% (UE)
 - andre: 15% default
-Prisene (price_low/price_high) SKAL allerede inkludere påslag. paslag_pct er informativ.`
+Prisene (price_low/price_high) SKAL allerede inkludere påslag. paslag_pct er informativ.
+
+FORUTSETNINGER — vurder per prosjekt basert på byggtype:
+- Oppvarmet bygg (butikk, verksted, kontor, vaskehall): U-verdi tak/vegg 0.18, glass 1.2
+- Uoppvarmet (kaldtlager, båtopplag, sandlager): U-verdi null (uisolert) eller 0.22-0.30
+- Tiltaksklasse: "1" for små enkle bygg, "2" for vanlige, "3" for komplekse
+- Bruddgrense vanligvis 250 kN/m², men kan være 200-400 avhengig av grunnforhold
+- Gyldighet: 14 dager default, 30 for større/komplekse prosjekter`
 
 // ─── File handling ───────────────────────────────────────────────────────────
 async function fileToContent(file) {

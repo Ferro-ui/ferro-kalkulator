@@ -156,10 +156,30 @@ function buildFooter() {
 // ── Main export ───────────────────────────────────────────────────────────────
 export async function generateAndDownloadDocx(data) {
   const DEFAULT_SIGNER = { name: 'Marian Mychko', title: 'Kalkulatør', tlf: '91 92 36 26', email: 'marian@ferrostal.no' }
+  const DEFAULT_FORUTSETNINGER = {
+    u_verdi_tak: 0.18,
+    u_verdi_vegg: 0.18,
+    u_verdi_glass: 1.2,
+    tiltaksklasse: '2',
+    bruddgrense_kn_m2: 250,
+    gyldighet_dager: 14,
+  }
   const {
     projectName, result, blocks, stalPrice, riggPct, kunde,
   } = data
   const signer = { ...DEFAULT_SIGNER, ...(data.signer || {}) }
+  const f = { ...DEFAULT_FORUTSETNINGER, ...(data.forutsetninger || {}) }
+
+  // Helper for U-verdi text
+  const uVerdiText = () => {
+    const parts = []
+    if (f.u_verdi_tak != null) parts.push(`tak ${String(f.u_verdi_tak).replace('.', ',')}`)
+    if (f.u_verdi_vegg != null) parts.push(`vegg ${String(f.u_verdi_vegg).replace('.', ',')}`)
+    if (f.u_verdi_glass != null) parts.push(`glass ${String(f.u_verdi_glass).replace('.', ',')}`)
+    return parts.length > 0
+      ? `U-verdi: ${parts.join(', ')}.`
+      : 'Uisolert bygg — ingen U-verdi krav.'
+  }
 
   // Decode logo from base64
   const logoBytes = Uint8Array.from(atob(FERRO_LOGO_B64), c => c.charCodeAt(0))
@@ -305,10 +325,10 @@ export async function generateAndDownloadDocx(data) {
         bullet('Tegning på stål gjelder for pris. Prisjustering iht. beregningsgrunnlag.'),
         bullet('Fundamentering dimensjonert for monteringslaster — Ferro ikke ansvar for setninger.'),
         bullet('Fremkommelig vei rundt bygget (min. 4 m bredde) for kran/transport.'),
-        bullet('Budsjettet gyldig 14 dager.'),
+        bullet(`Budsjettet gyldig ${f.gyldighet_dager} dager.`),
         bullet('Stålpris-forbehold: Budsjettet på stål er bygd på gårsdagens innkjøpspriser. Verkene har varslet prisoppgang og holder kun priser på dagsbasis. Vi forbeholder oss retten til gjennomgang ved kontrakt.'),
-        bullet('Tiltaksklasse 2, seismikk utelates, direkte fundamentering 250 kN/m² bruddgrense.'),
-        bullet('U-verdi: tak 0,18, vegg 0,18, glass 1,2.'),
+        bullet(`Tiltaksklasse ${f.tiltaksklasse}, seismikk utelates, direkte fundamentering ${f.bruddgrense_kn_m2} kN/m² bruddgrense.`),
+        bullet(uVerdiText()),
         bullet('War-clause: Force majeure iht. NS 8417 pkt. 33 / NS 8415 pkt. 24.'),
         bullet('Ryddet ut etter eget arbeid, ikke vasket.'),
         bullet('Budsjettet er basert på foreliggende dokumentasjon. Endelig pris gjennomgås dersom grunnlaget endres vesentlig.'),

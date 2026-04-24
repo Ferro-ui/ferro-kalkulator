@@ -1,6 +1,7 @@
 const STORAGE_KEY = 'ferro_project_v2'
 const API_KEY_STORAGE = 'ferro_anthropic_key'
 const SIGNER_STORAGE = 'ferro_signer'
+const FEEDBACK_STORAGE = 'ferro_feedback_v1'
 
 const DEFAULT_SIGNER = {
   name: 'Marian Mychko',
@@ -53,6 +54,17 @@ export function confidenceLabel(c) {
 
 export function confidenceColor(c) {
   return { lav: 'var(--warning)', middels: 'var(--blue)', høy: 'var(--success)' }[c] || 'var(--text-dim)'
+}
+
+export function saveFeedback(entries) {
+  try { localStorage.setItem(FEEDBACK_STORAGE, JSON.stringify(entries)) } catch {}
+}
+
+export function loadFeedback() {
+  try {
+    const raw = localStorage.getItem(FEEDBACK_STORAGE)
+    return raw ? JSON.parse(raw) : []
+  } catch { return [] }
 }
 
 // Export summary as txt

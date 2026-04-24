@@ -4,7 +4,7 @@ import { analyzeProject } from './analyzeProject'
 import {
   fmt, fmtKr, saveProject, loadProject, clearProject,
   saveApiKey, loadApiKey, confidenceColor, exportSummary,
-  saveSigner, loadSigner
+  saveSigner, loadSigner, saveFeedback, loadFeedback
 } from './utils'
 import { t, getLang, setLang } from './translations'
 
@@ -114,6 +114,129 @@ function BlockRow({ block, onChange }) {
           )}
         </div>
       )}
+    </div>
+  )
+}
+
+// ─── Feedback modal ───────────────────────────────────────────────────────────
+function FeedbackModal({ onClose, currentProject, currentGrandLow, currentGrandHigh }) {
+  const [entries, setEntries] = useState(loadFeedback)
+  const [form, setForm] = useState({
+    name: currentProject || '',
+    ai_low: currentGrandLow ? Math.round(currentGrandLow) : '',
+    ai_high: currentGrandHigh ? Math.round(currentGrandHigh) : '',
+    faktisk_tilbud: '',
+    solgt_for: '',
+    kommentar: '',
+  })
+  const [saved, setSaved] = useState(false)
+
+  const upd = (key, val) => setForm(p => ({ ...p, [key]: val }))
+
+  const handleSave = () => {
+    if (!form.faktisk_tilbud) return
+    const entry = {
+      name: form.name,
+      dato: new Date().toISOString().split('T')[0],
+      ai_low: parseInt(form.ai_low) || null,
+      ai_high: parseInt(form.ai_high) || null,
+      faktisk_tilbud: parseInt(form.faktisk_tilbud),
+      solgt_for: form.solgt_for ? parseInt(form.solgt_for) : null,
+      kommentar: form.kommentar || null,
+    }
+    const updated = [...entries, entry]
+    saveFeedback(updated)
+    setEntries(updated)
+    setSaved(true)
+    setForm({ name: '', ai_low: '', ai_high: '', faktisk_tilbud: '', solgt_for: '', kommentar: '' })
+    setTimeout(() => setSaved(false), 2500)
+  }
+
+  const handleDelete = (idx) => {
+    const updated = entries.filter((_, i) => i !== idx)
+    saveFeedback(updated)
+    setEntries(updated)
+  }
+
+  const inputStyle = { width: '100%', padding: '10px 14px', fontSize: 14, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg-input)', color: 'var(--text)', fontFamily: "'Inter',sans-serif", boxSizing: 'border-box' }
+  const monoStyle = { ...inputStyle, fontFamily: "'DM Mono',monospace", textAlign: 'right' }
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16, overflowY: 'auto' }}>
+      <Card style={{ width: '100%', maxWidth: 540, padding: '28px', animation: 'fadeUp 0.3s ease', margin: 'auto' }}>
+        <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>Faktisk pris — feedback</div>
+        <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 20 }}>Registrer hva prosjektet faktisk ble tilbudt. AI bruker dette til å kalibrere fremtidige estimater.</div>
+
+        <div style={{ marginBottom: 12 }}>
+          <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>Prosjektnavn</label>
+          <input value={form.name} onChange={e => upd('name', e.target.value)} placeholder="Lagerbygg Steinsholt..." style={inputStyle} />
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+          {[
+            { label: 'AI estimat Fra (kr)', key: 'ai_low', ph: '2 200 000' },
+            { label: 'AI estimat Til (kr)', key: 'ai_high', ph: '2 700 000' },
+          ].map(f => (
+            <div key={f.key}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>{f.label}</label>
+              <input type="number" value={form[f.key]} onChange={e => upd(f.key, e.target.value)} placeholder={f.ph} style={monoStyle} />
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>Faktisk tilbud sendt (kr) *</label>
+            <input type="number" value={form.faktisk_tilbud} onChange={e => upd('faktisk_tilbud', e.target.value)} placeholder="2 950 000" style={monoStyle} />
+          </div>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>Solgt for (kr)</label>
+            <input type="number" value={form.solgt_for} onChange={e => upd('solgt_for', e.target.value)} placeholder="Hvis annet" style={monoStyle} />
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', display: 'block', marginBottom: 6 }}>Kommentar (valgfritt)</label>
+          <input value={form.kommentar} onChange={e => upd('kommentar', e.target.value)} placeholder="f.eks. ukjent grunnforhold krevde ekstra" style={inputStyle} />
+        </div>
+
+        <div style={{ display: 'flex', gap: 10, marginBottom: entries.length ? 24 : 0 }}>
+          <button onClick={handleSave} disabled={!form.faktisk_tilbud} style={{
+            flex: 1, padding: '12px', fontSize: 14, fontWeight: 700, borderRadius: 10, border: 'none',
+            cursor: !form.faktisk_tilbud ? 'not-allowed' : 'pointer',
+            background: saved ? 'var(--success)' : 'var(--accent)', color: '#fff',
+            fontFamily: "'Inter',sans-serif", opacity: !form.faktisk_tilbud ? 0.5 : 1, transition: 'background 0.3s',
+          }}>{saved ? '✓ Lagret' : 'Registrer'}</button>
+          <button onClick={onClose} style={{ padding: '12px 18px', fontSize: 14, fontWeight: 600, borderRadius: 10, border: '1px solid var(--border)', background: 'none', color: 'var(--text-dim)', cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>Lukk</button>
+        </div>
+
+        {entries.length > 0 && (
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+              Registrerte ({entries.length})
+            </div>
+            {entries.map((e, i) => {
+              const aiMid = e.ai_low && e.ai_high ? Math.round((e.ai_low + e.ai_high) / 2) : null
+              const pct = aiMid && e.faktisk_tilbud ? Math.round(((e.faktisk_tilbud - aiMid) / aiMid) * 100) : null
+              const pctColor = pct > 0 ? 'var(--success)' : pct < 0 ? 'var(--danger)' : 'var(--text-dim)'
+              return (
+                <div key={i} style={{ padding: '10px 14px', background: 'var(--bg-input)', borderRadius: 8, marginBottom: 6, fontSize: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, marginBottom: 2 }}>{e.name || '(uten navn)'} <span style={{ fontWeight: 400, color: 'var(--text-dim)' }}>{e.dato}</span></div>
+                    <div style={{ color: 'var(--text-dim)', fontFamily: "'DM Mono',monospace" }}>
+                      {e.ai_low && e.ai_high && <span>{e.ai_low.toLocaleString('nb-NO')}–{e.ai_high.toLocaleString('nb-NO')} → </span>}
+                      <span style={{ color: 'var(--text)' }}>{e.faktisk_tilbud?.toLocaleString('nb-NO')} kr</span>
+                      {pct !== null && <span style={{ color: pctColor, marginLeft: 8, fontWeight: 700 }}>{pct > 0 ? '+' : ''}{pct}%</span>}
+                    </div>
+                    {e.kommentar && <div style={{ color: 'var(--text-dim)', marginTop: 2, fontStyle: 'italic' }}>{e.kommentar}</div>}
+                  </div>
+                  <button onClick={() => handleDelete(i)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-dim)', fontSize: 18, padding: '0 4px', lineHeight: 1 }}>×</button>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </Card>
     </div>
   )
 }
@@ -251,6 +374,7 @@ export default function App() {
   const [stalPrice, setStalPrice] = useState('')
   const [riggPct, setRiggPct] = useState(8)
   const [showTilbudModal, setShowTilbudModal] = useState(false)
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false)
   const [generatingBrev, setGeneratingBrev] = useState(false)
   const [brevStatus, setBrevStatus] = useState('')
   const fileInputRef = useRef(null)
@@ -357,12 +481,21 @@ export default function App() {
           aiForutsetninger={result?.forutsetninger}
         />
       )}
+      {showFeedbackModal && (
+        <FeedbackModal
+          onClose={() => setShowFeedbackModal(false)}
+          currentProject={projectName}
+          currentGrandLow={result ? grandLow : null}
+          currentGrandHigh={result ? grandHigh : null}
+        />
+      )}
 
       {/* Top nav bar */}
       <div style={{ background: '#fff', borderBottom: '1px solid var(--border)', padding: '0 32px', height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 10, boxShadow: '0 1px 6px rgba(27,48,80,0.07)' }}>
         <img src={`data:image/png;base64,${FERRO_LOGO_B64}`} alt="Ferro Stålentreprenør AS" style={{ height: 44, objectFit: 'contain' }} />
         <div style={{ display: 'flex', gap: 8 }}>
           {result && <button onClick={handleReset} style={{ padding: '8px 16px', fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: 'none', color: 'var(--text-dim)', border: '1px solid var(--border)', fontFamily: "'Inter',sans-serif" }}>{t('nullstill')}</button>}
+          <button onClick={() => setShowFeedbackModal(true)} title="Registrer faktisk pris for AI-kalibrering" style={{ padding: '8px 14px', fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: 'none', color: 'var(--text-dim)', border: '1px solid var(--border)', fontFamily: "'Inter',sans-serif" }}>📊</button>
           <button onClick={() => { setLang(getLang() === 'nb' ? 'uk' : 'nb'); window.location.reload() }}
             style={{ padding: '8px 12px', fontSize: 13, fontWeight: 600, borderRadius: 8, cursor: 'pointer', background: 'none', color: 'var(--text-dim)', border: '1px solid var(--border)', fontFamily: "'Inter',sans-serif" }}>
             {getLang() === 'nb' ? '🇺🇦 UA' : '🇳🇴 NO'}

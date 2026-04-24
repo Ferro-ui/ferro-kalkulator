@@ -289,6 +289,53 @@ async function callClaude(apiKey, system, userContent, onStatus, retries = 2) {
 }
 
 
+// ─── Build feedback context (past estimate vs actual) ───────────────────────
+function buildFeedbackContext() {
+  let feedback = []
+  try {
+    const raw = localStorage.getItem('ferro_feedback_v1')
+    feedback = raw ? JSON.parse(raw) : []
+  } catch {}
+  if (!feedback.length) return ''
+
+  const lines = [
+    '',
+    '═══════════════════════════════════════════════════════════',
+    'FEEDBACK FRA TIDLIGERE ESTIMATER — KALIBRERING',
+    '═══════════════════════════════════════════════════════════',
+    'Reelle avvik mellom AI-estimat og faktisk tilbud hos Ferro:',
+    '',
+  ]
+
+  let avvikSum = 0, count = 0
+  for (const e of feedback) {
+    const aiMid = e.ai_low && e.ai_high ? Math.round((e.ai_low + e.ai_high) / 2) : null
+    const faktisk = e.faktisk_tilbud
+    let avvikStr = ''
+    if (aiMid && faktisk) {
+      const pct = Math.round(((faktisk - aiMid) / aiMid) * 100)
+      avvikStr = `(${pct > 0 ? '+' : ''}${pct}% fra AI midtpunkt)`
+      avvikSum += pct
+      count++
+    }
+    lines.push(`  ${e.name || '(ukjent)'}:`)
+    if (e.ai_low && e.ai_high) lines.push(`    AI estimat: ${e.ai_low.toLocaleString('nb-NO')} – ${e.ai_high.toLocaleString('nb-NO')} kr`)
+    lines.push(`    Faktisk tilbud: ${faktisk?.toLocaleString('nb-NO')} kr ${avvikStr}`)
+    if (e.solgt_for) lines.push(`    Solgt for: ${e.solgt_for.toLocaleString('nb-NO')} kr`)
+    if (e.kommentar) lines.push(`    Kommentar: ${e.kommentar}`)
+    lines.push('')
+  }
+
+  if (count > 0) {
+    const avg = Math.round(avvikSum / count)
+    lines.push(`Systematisk avvik over ${count} prosjekter: gjennomsnittlig ${avg > 0 ? '+' : ''}${avg}% fra AI midtpunkt.`)
+    if (avg > 3) lines.push(`→ JUSTER ESTIMATENE OPP ca. ${avg}% for å kompensere for undervurdering.`)
+    else if (avg < -3) lines.push(`→ AI har overvurdert — vær litt forsiktigere med høy-tallene.`)
+  }
+  lines.push('═══════════════════════════════════════════════════════════')
+  return lines.join('\n')
+}
+
 // ─── Build historical context ────────────────────────────────────────────────
 function buildHistoricalContext() {
   if (!historiskeProsjekter || historiskeProsjekter.length === 0) return ''
@@ -362,6 +409,23 @@ function buildHistoricalContext() {
     if (paaslag.kommentar) lines.push(`  Påslag-logikk: ${paaslag.kommentar}`)
 
     if (p.merknader) lines.push(`  Merknader: ${p.merknader}`)
+
+    // Detailed calculation breakdown (NEW — from deep xlsx scan)
+    if (p.detaljert_kalkulasjon?.blokker) {
+      lines.push(`  📊 DETALJERT KALKULASJON:`)
+      const blokker = p.detaljert_kalkulasjon.blokker
+      for (const [blokk, data] of Object.entries(blokker)) {
+        if (!data?.poster || data.poster.length === 0) continue
+        lines.push(`     ${blokk.toUpperCase()} (total ${data.total_kr?.toLocaleString('nb-NO') || '?'} kr):`)
+        for (const post of data.poster) {
+          const mengde = post.mengde ? `${post.mengde} ${post.enhet || ''}` : ''
+          const pris = post.enhetspris ? `à ${post.enhetspris} kr` : ''
+          const sum = post.sum ? `= ${post.sum.toLocaleString('nb-NO')} kr` : ''
+          lines.push(`       · ${post.navn}: ${mengde} ${pris} ${sum}`.trim())
+        }
+      }
+    }
+
     lines.push('')
   })
 
@@ -372,6 +436,16 @@ function buildHistoricalContext() {
   lines.push('3. Juster opp/ned basert på m², kompleksitet, scope-forskjeller')
   lines.push('4. Påslag-logikken viser hvordan Ferro pricer materialer')
   lines.push('5. Oppgi i "basis" HVILKET historisk prosjekt du sammenlignet med')
+  lines.push('')
+  lines.push('KRITISK — BRUK DETALJERT KALKULASJON:')
+  lines.push('Når du ser "📊 DETALJERT KALKULASJON" — det er FULLSTENDIG prisstruktur.')
+  lines.push('Eks: "tak" består av takplater + montering + festemateriell + overgangsbeslag + tekkebeslag.')
+  lines.push('Når du priser "tak"-blokken, sum ALLE disse underpostene — ikke bare materialet.')
+  lines.push('Hvis leverandørtilbud dekker kun materiale (f.eks. takplater), LEGG TIL:')
+  lines.push('  - Montering (~130 kr/m²)')
+  lines.push('  - Festemateriell (~115 kr/m²)')
+  lines.push('  - Beslag (~290 kr/lm)')
+  lines.push('Ellers blir prisen 40-50% for lav.')
   lines.push('═══════════════════════════════════════════════════════════\n')
 
   return lines.join('\n')
@@ -445,10 +519,11 @@ export async function analyzeProject(wrappedFiles, extraInfo, apiKey, onStatus) 
   onStatus(`🔀 Konsoliderer ${summaries.length} sammendrag til endelig estimat...`)
 
   const historicalContext = buildHistoricalContext()
+  const feedbackContext = buildFeedbackContext()
   const mergeText = `Her er sammendrag fra ${summaries.length} batcher fra samme prosjekt:
 
 ${summaries.map(s => `=== BATCH ${s.batchIndex} (filer: ${s.fileNames.join(', ')}) ===\n${s.summary}`).join('\n\n')}
-${extraInfo ? `\nTilleggsinformasjon fra bruker:\n${extraInfo}\n` : ''}${historicalContext}
+${extraInfo ? `\nTilleggsinformasjon fra bruker:\n${extraInfo}\n` : ''}${feedbackContext}${historicalContext}
 Lag et helhetlig prisestimat basert på ALL informasjonen over.`
 
   const finalRaw = await callClaude(apiKey, MERGE_SYSTEM_PROMPT, [{ type: 'text', text: mergeText }], onStatus)
@@ -458,9 +533,10 @@ Lag et helhetlig prisestimat basert på ALL informasjonen over.`
 // ─── Single-call path ────────────────────────────────────────────────────────
 async function analyzeSingleCall(wrappedFiles, extraInfo, apiKey, onStatus) {
   const historicalContext = buildHistoricalContext()
+  const feedbackContext = buildFeedbackContext()
   const content = [{
     type: 'text',
-    text: `Jeg laster opp ${wrappedFiles.length} prosjektdokument(er) for analyse.${extraInfo ? `\n\nTilleggsinformasjon:\n${extraInfo}` : ''}${historicalContext}\n\nAnalyser dokumentene og gi et grovt prisestimat per arbeidsblokk.`
+    text: `Jeg laster opp ${wrappedFiles.length} prosjektdokument(er) for analyse.${extraInfo ? `\n\nTilleggsinformasjon:\n${extraInfo}` : ''}${feedbackContext}${historicalContext}\n\nAnalyser dokumentene og gi et grovt prisestimat per arbeidsblokk.`
   }]
 
   for (let i = 0; i < wrappedFiles.length; i++) {

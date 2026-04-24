@@ -566,7 +566,313 @@
     },
     "scope": "Ferro Stålentreprenør AS leverer totalentreprise dobbel vaskehall nøkkelferdig eks. ventilasjon og elektro: grunnarbeid (utgraving, ringmur, avretting), betonggulv (isolert b35mf45, stålglattet, renner), galvanisert boltet stålkonstruksjon, sandwich-veggelementer 120mm PIR, selvbærende TRP takplater med asfaltbelegg og mineralullisolasjon, 4 stk ASSA ABLOY foldeporter, 4 stk vinduspartier Sapa 1086, 3 stk ståldører, rørleggerarbeider inkl. oljeutskiller SUK-R, pumpekum, slukrenner og taknedløp, prosjektering fundamenter/brannkonsept",
     "tekniske_losninger": "Stålkonstruksjon: galvanisert boltet system (EXC2, C1/C2), søyler med påsveiste bunnplater boltet til betonggulv — ingen innstøpte søyler. Gulv: randforsterket plate b35mf45 mf45 150mm, 50mm XPS, diffusjonssperre, k257 armeringsnett, stålglattet, fall til 500x500mm avløpsrenner (2x10lm), L-elementer kantforsterking 400x200mm. Tak: selvbærende TRP 128R.930 galv + 30mm underlagsplate + 140mm Glava Lett Lamell + 30mm Paroc Takboard = 200mm total isolasjon (U-verdi 0.17/0.18), ettlags asfaltbelegg, 2 taksluk + 1 nødsluk. Vegger: 120mm PIR sandwich (U-verdi 0.19, PUR55 C4 innvendig), innervegger 100mm PIR (U-verdi 0.22). Porter: ASSA ABLOY FD2050FCW foldeport 3600x3600mm, utvendig montasje, 2+2 seksjon, DH4S dobbelt herdet glass, operated CW. Oljeutskiller: nedgravd rektangulær SUK-R (Odin/Odin Maskin), sandfang 3m³ + utskiller 8m³ + rentvannstank 9m³, GRP pumpekum med lensepumpe, Afriso ASA-02 EX-alarm. Takvinkel: 1.1°–1.54° (nesten flatt tak). Fundamenter: direkte fundamentering ringmurer, 250 kN/m² bruddgrense, tiltaksklasse 2",
-    "merknader": "Prosjektet er et standardisert produkt som Ferro tilbyr som repeterbar modell — samme tegning og prisoverslag brukt for Drammen, Nordstrand og Halden med volumrabatt kr 250 000 ved 3 haller. Totalpris kr 3 777 000 ekskl. mva for 185m² gir ca. kr 20 400/m² — ventilasjon og elektro ikke inkludert. Viktig læringspoeng: Ferro innhenter parallelle tilbud fra Ståleriet AS og Storm Stål/Storm Betong — Storm Stål stål + betong = kr 781 355 vs Ståleriet stål kr 341 000 + Storm Betong separat, noe som viser at betong og stål prises separat i kalkylen."
+    "merknader": "Prosjektet er et standardisert produkt som Ferro tilbyr som repeterbar modell — samme tegning og prisoverslag brukt for Drammen, Nordstrand og Halden med volumrabatt kr 250 000 ved 3 haller. Totalpris kr 3 777 000 ekskl. mva for 185m² gir ca. kr 20 400/m² — ventilasjon og elektro ikke inkludert. Viktig læringspoeng: Ferro innhenter parallelle tilbud fra Ståleriet AS og Storm Stål/Storm Betong — Storm Stål stål + betong = kr 781 355 vs Ståleriet stål kr 341 000 + Storm Betong separat, noe som viser at betong og stål prises separat i kalkylen.",
+    "detaljert_kalkulasjon": {
+      "prosjekt_navn": "Vaskehall Glitra",
+      "bygg": {
+        "type": "Vaskehall / overflatebehandlingsanlegg",
+        "dimensjoner": "ukjent grunnflate, takareal 185 m², yttervegg 280 m²",
+        "bra_m2": null,
+        "fasade_m2": 280,
+        "tak_m2": 185
+      },
+      "blokker": {
+        "stal": {
+          "total_kr": 350773,
+          "poster": [
+            {
+              "navn": "Stålkonstruksjon - prosjektert, levert og montert",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 350773,
+              "sum": 350773
+            }
+          ]
+        },
+        "tak": {
+          "total_kr": 117616,
+          "poster": [
+            {
+              "navn": "Selvbærende takplater levert galvanisert",
+              "mengde": 185,
+              "enhet": "m2",
+              "enhetspris": 270,
+              "sum": 49996
+            },
+            {
+              "navn": "Montering takplater",
+              "mengde": 185,
+              "enhet": "m2",
+              "enhetspris": 207,
+              "sum": 38295
+            },
+            {
+              "navn": "Tekkebeslag",
+              "mengde": 28,
+              "enhet": "lm",
+              "enhetspris": 288,
+              "sum": 8050
+            },
+            {
+              "navn": "Festemateriell",
+              "mengde": 185,
+              "enhet": "m2",
+              "enhetspris": 115,
+              "sum": 21275
+            }
+          ]
+        },
+        "yttervegg": {
+          "total_kr": 423545,
+          "poster": [
+            {
+              "navn": "Sandwich 100 mm PIR levert",
+              "mengde": 280,
+              "enhet": "m2",
+              "enhetspris": 633,
+              "sum": 177100
+            },
+            {
+              "navn": "Materiell: skruer, isolasjon, fugemasse, teip osv.",
+              "mengde": 280,
+              "enhet": "m2",
+              "enhetspris": 138,
+              "sum": 38640
+            },
+            {
+              "navn": "Montasje av sandwich",
+              "mengde": 280,
+              "enhet": "m2",
+              "enhetspris": 276,
+              "sum": 77280
+            },
+            {
+              "navn": "Kutting av sandwich",
+              "mengde": 10,
+              "enhet": "lm",
+              "enhetspris": 288,
+              "sum": 2875
+            },
+            {
+              "navn": "U-beslag i vindus- og døråpning",
+              "mengde": 12,
+              "enhet": "lm",
+              "enhetspris": 288,
+              "sum": 3450
+            },
+            {
+              "navn": "Utvendig beslagsarbeid",
+              "mengde": 280,
+              "enhet": "m2",
+              "enhetspris": 402,
+              "sum": 112700
+            },
+            {
+              "navn": "Frakt takplater og sandwich",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 11500,
+              "sum": 11500
+            }
+          ]
+        },
+        "innervegg": {
+          "total_kr": 0,
+          "poster": []
+        },
+        "porter": {
+          "total_kr": 460000,
+          "poster": [
+            {
+              "navn": "Porter (UE)",
+              "mengde": 4,
+              "enhet": "stk",
+              "enhetspris": 115000,
+              "sum": 460000
+            }
+          ]
+        },
+        "dorer_vinduer": {
+          "total_kr": 309000,
+          "poster": [
+            {
+              "navn": "Dører yttervegg",
+              "mengde": 3,
+              "enhet": "stk",
+              "enhetspris": 23000,
+              "sum": 69000
+            },
+            {
+              "navn": "Vinduer",
+              "mengde": 1,
+              "enhet": "stk",
+              "enhetspris": 240000,
+              "sum": 240000
+            }
+          ]
+        },
+        "betong": {
+          "total_kr": 489325,
+          "poster": [
+            {
+              "navn": "Betongarbeid - oppstart",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 18500,
+              "sum": 18500
+            },
+            {
+              "navn": "Rigg og drift betong",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 10000,
+              "sum": 10000
+            },
+            {
+              "navn": "Gulv på grunn 150 mm + MX 200 i 150 mm armert 2xK225 nett",
+              "mengde": 225,
+              "enhet": "m2",
+              "enhetspris": 759,
+              "sum": 170775
+            },
+            {
+              "navn": "Radonsperre",
+              "mengde": 225,
+              "enhet": "m2",
+              "enhetspris": 115,
+              "sum": 25875
+            },
+            {
+              "navn": "Støp og stålglatting",
+              "mengde": 225,
+              "enhet": "m2",
+              "enhetspris": 79,
+              "sum": 17775
+            },
+            {
+              "navn": "Membranherder",
+              "mengde": 225,
+              "enhet": "m2",
+              "enhetspris": 11,
+              "sum": 2475
+            },
+            {
+              "navn": "Galv vinkel",
+              "mengde": 1,
+              "enhet": "stk",
+              "enhetspris": 4250,
+              "sum": 4250
+            },
+            {
+              "navn": "Betongarbeid UE (total inkl. påslag 15%)",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 489325,
+              "sum": 489325
+            }
+          ]
+        },
+        "grunnarbeid": {
+          "total_kr": 1083000,
+          "poster": [
+            {
+              "navn": "Graving (UE)",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 407000,
+              "sum": 407000
+            },
+            {
+              "navn": "Oljeutskiller (UE)",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 253000,
+              "sum": 253000
+            },
+            {
+              "navn": "Rørlegger (UE)",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 423500,
+              "sum": 423500
+            }
+          ]
+        },
+        "kran_lift": {
+          "total_kr": 98175,
+          "poster": [
+            {
+              "navn": "Manitou",
+              "mengde": 15,
+              "enhet": "dag",
+              "enhetspris": 2420,
+              "sum": 36300
+            },
+            {
+              "navn": "Terrenggående lift",
+              "mengde": 25,
+              "enhet": "dag",
+              "enhetspris": 715,
+              "sum": 17875
+            },
+            {
+              "navn": "Transport Manitou",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 22000,
+              "sum": 22000
+            },
+            {
+              "navn": "Transport stor lift",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 22000,
+              "sum": 22000
+            }
+          ]
+        },
+        "rigg": {
+          "total_kr": 143628,
+          "poster": [
+            {
+              "navn": "Rigg og drift (4% av arbeider)",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 143628,
+              "sum": 143628
+            },
+            {
+              "navn": "RIB prosjektering (UE)",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 33000,
+              "sum": 33000
+            },
+            {
+              "navn": "Låssystem",
+              "mengde": 1,
+              "enhet": "RS",
+              "enhetspris": 5750,
+              "sum": 5750
+            }
+          ]
+        },
+        "taktekking": {
+          "total_kr": 254375,
+          "poster": [
+            {
+              "navn": "Taktekking (UE)",
+              "mengde": 185,
+              "enhet": "m2",
+              "enhetspris": 1375,
+              "sum": 254375
+            }
+          ]
+        }
+      },
+      "total_eks_mva": 3777000,
+      "merknader": "Vaskehall for Glitra med 185 m² tak og 280 m² yttervegg i sandwich 100 mm PIR. Prosjektet inkluderer 4 industri­porter, 1 vindu og 3 dører, samt graving, oljeutskiller og rørlegger som egne UE-poster. Stålkonstruksjonen er priset som ett samlet RS-beløp fra underleverandør."
+    }
   },
   {
     "navn": "Bussgarasje Mjåvann",
@@ -2846,725 +3152,6 @@
       },
       "total_eks_mva": 3139000,
       "merknader": "Vaskehall på Geithus med 715 m² gulvareal og 80 m² tak; prosjektet inkluderer oljeutskiller (kr 495 523) som er en betydelig kostnad, og Møre Royal trekledning på fasade er kalkulert basert på Talgo-tilbud med 153 m² yttervegg. Rigg og drift på 9% er inkludert i totalen som RS-post."
-    }
-  },
-  {
-    "navn": "Enkel vaskehall Geithus",
-    "bygg": {
-      "type": "Vaskehall",
-      "dimensjoner": "ca. 715 m² grunnflate (basert på betongaReal)",
-      "bra_m2": 715,
-      "fasade_m2": 153,
-      "tak_m2": 80
-    },
-    "detaljert_kalkulasjon": {
-      "prosjekt_navn": "Enkel vaskehall Geithus",
-      "bygg": {
-        "type": "Vaskehall",
-        "dimensjoner": "ca. 715 m² grunnflate (basert på betongaReal)",
-        "bra_m2": 715,
-        "fasade_m2": 153,
-        "tak_m2": 80
-      },
-      "blokker": {
-        "stal": {
-          "total_kr": 308450,
-          "poster": [
-            {
-              "navn": "Stålkonstruksjon - prosjektert, levert og montert",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 308450,
-              "sum": 308450
-            }
-          ]
-        },
-        "tak": {
-          "total_kr": 67716,
-          "poster": [
-            {
-              "navn": "Selvbærende takplater levert galvanisert",
-              "mengde": 80,
-              "enhet": "m2",
-              "enhetspris": 403,
-              "sum": 32256
-            },
-            {
-              "navn": "Montering takplater",
-              "mengde": 80,
-              "enhet": "m2",
-              "enhetspris": 242,
-              "sum": 19360
-            },
-            {
-              "navn": "Tekkebeslag",
-              "mengde": 24,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 6900
-            },
-            {
-              "navn": "Festemateriell",
-              "mengde": 80,
-              "enhet": "m2",
-              "enhetspris": 115,
-              "sum": 9200
-            }
-          ]
-        },
-        "yttervegg": {
-          "total_kr": 284671,
-          "poster": [
-            {
-              "navn": "Sandwich 120 mm PIR levert",
-              "mengde": 153,
-              "enhet": "m2",
-              "enhetspris": 644,
-              "sum": 98532
-            },
-            {
-              "navn": "Materiell: skruer, isolasjon, fugemasse, teip osv.",
-              "mengde": 153,
-              "enhet": "m2",
-              "enhetspris": 173,
-              "sum": 26392
-            },
-            {
-              "navn": "Montasje av sandwich",
-              "mengde": 153,
-              "enhet": "m2",
-              "enhetspris": 402,
-              "sum": 61582
-            },
-            {
-              "navn": "Kutting av sandwich",
-              "mengde": 31,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 8913
-            },
-            {
-              "navn": "U-beslag i vindus- og døråpning",
-              "mengde": 44,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 12650
-            },
-            {
-              "navn": "Utvendig beslagsarbeid",
-              "mengde": 153,
-              "enhet": "m2",
-              "enhetspris": 425,
-              "sum": 65101
-            },
-            {
-              "navn": "Frakt takplater og sandwich",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 11500,
-              "sum": 11500
-            }
-          ]
-        },
-        "innervegg": {
-          "total_kr": 69828,
-          "poster": [
-            {
-              "navn": "Veggelementer levert",
-              "mengde": 52,
-              "enhet": "m2",
-              "enhetspris": 656,
-              "sum": 34086
-            },
-            {
-              "navn": "Materiell: skruer, monteringsbeslag, isolasjon etc.",
-              "mengde": 52,
-              "enhet": "m2",
-              "enhetspris": 92,
-              "sum": 4784
-            },
-            {
-              "navn": "Montasje av sandwich",
-              "mengde": 52,
-              "enhet": "m2",
-              "enhetspris": 218,
-              "sum": 11362
-            },
-            {
-              "navn": "Kutting av sandwich",
-              "mengde": 12,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 3450
-            },
-            {
-              "navn": "Beslagsarbeider",
-              "mengde": 52,
-              "enhet": "m2",
-              "enhetspris": 311,
-              "sum": 16146
-            }
-          ]
-        },
-        "porter": {
-          "total_kr": 242000,
-          "poster": [
-            {
-              "navn": "Porter (UE, 2 stk)",
-              "mengde": 2,
-              "enhet": "stk",
-              "enhetspris": 121000,
-              "sum": 242000
-            }
-          ]
-        },
-        "dorer_vinduer": {
-          "total_kr": 161230,
-          "poster": [
-            {
-              "navn": "Dører yttervegg",
-              "mengde": 1,
-              "enhet": "stk",
-              "enhetspris": 75969,
-              "sum": 75969
-            },
-            {
-              "navn": "Vinduer",
-              "mengde": 1,
-              "enhet": "stk",
-              "enhetspris": 85261,
-              "sum": 85261
-            }
-          ]
-        },
-        "betong": {
-          "total_kr": 374000,
-          "poster": [
-            {
-              "navn": "K257 armeringsnett",
-              "mengde": 76,
-              "enhet": "stk",
-              "enhetspris": 1000,
-              "sum": 76000
-            },
-            {
-              "navn": "50+100 mm EPS isolasjon",
-              "mengde": 715,
-              "enhet": "m2",
-              "enhetspris": 162,
-              "sum": 115830
-            },
-            {
-              "navn": "150 mm betong gulv",
-              "mengde": 107,
-              "enhet": "m3",
-              "enhetspris": 2300,
-              "sum": 246675
-            },
-            {
-              "navn": "Arbeid gulvstøp",
-              "mengde": 715,
-              "enhet": "m2",
-              "enhetspris": 255,
-              "sum": 182325
-            },
-            {
-              "navn": "Materiell gulvstøp",
-              "mengde": 715,
-              "enhet": "m2",
-              "enhetspris": 30,
-              "sum": 21450
-            },
-            {
-              "navn": "Stripefundament - betong",
-              "mengde": 17,
-              "enhet": "m3",
-              "enhetspris": 2300,
-              "sum": 39100
-            },
-            {
-              "navn": "Stripefundament - armering",
-              "mengde": 1785,
-              "enhet": "kg",
-              "enhetspris": 25,
-              "sum": 44625
-            },
-            {
-              "navn": "Stripefundament - arbeid",
-              "mengde": 80,
-              "enhet": "t",
-              "enhetspris": 650,
-              "sum": 52000
-            },
-            {
-              "navn": "Radonduk",
-              "mengde": 715,
-              "enhet": "m2",
-              "enhetspris": 125,
-              "sum": 89375
-            }
-          ]
-        },
-        "grunnarbeid": {
-          "total_kr": 503723,
-          "poster": [
-            {
-              "navn": "Oljeutskiller (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 495523,
-              "sum": 495523
-            },
-            {
-              "navn": "Oppmåling og maskinstyring (innleid)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 3967,
-              "sum": 3967
-            },
-            {
-              "navn": "Geoingeniørene",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 11200,
-              "sum": 11200
-            },
-            {
-              "navn": "Møre Royal kledning (UE)",
-              "mengde": 153,
-              "enhet": "m2",
-              "enhetspris": 1127,
-              "sum": 172297
-            }
-          ]
-        },
-        "kran_lift": {
-          "total_kr": 93625,
-          "poster": [
-            {
-              "navn": "Manitou leie",
-              "mengde": 10,
-              "enhet": "dag",
-              "enhetspris": 2420,
-              "sum": 24200
-            },
-            {
-              "navn": "Terrenggående lift leie",
-              "mengde": 20,
-              "enhet": "dag",
-              "enhetspris": 715,
-              "sum": 14300
-            },
-            {
-              "navn": "Liten lift leie",
-              "mengde": 5,
-              "enhet": "dag",
-              "enhetspris": 385,
-              "sum": 1925
-            },
-            {
-              "navn": "Transport Manitou",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 22000,
-              "sum": 22000
-            },
-            {
-              "navn": "Transport stor lift",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 22000,
-              "sum": 22000
-            },
-            {
-              "navn": "Transport liten lift",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 9200,
-              "sum": 9200
-            }
-          ]
-        },
-        "rigg": {
-          "total_kr": 260646,
-          "poster": [
-            {
-              "navn": "Rigg og drift (9% av sum)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 260646,
-              "sum": 260646
-            },
-            {
-              "navn": "RIB (konstruksjonsrådgiving)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 49500,
-              "sum": 49500
-            },
-            {
-              "navn": "ARK og SØK",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 38500,
-              "sum": 38500
-            },
-            {
-              "navn": "Taktekking (UE)",
-              "mengde": 80,
-              "enhet": "m2",
-              "enhetspris": 1610,
-              "sum": 128800
-            },
-            {
-              "navn": "Rørlegger (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 220000,
-              "sum": 220000
-            },
-            {
-              "navn": "Skilt/foliering (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 132000,
-              "sum": 132000
-            },
-            {
-              "navn": "Låssystem",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 8050,
-              "sum": 8050
-            },
-            {
-              "navn": "Div brannslukningsapparat og nøkkelboks",
-              "mengde": 4,
-              "enhet": "stk",
-              "enhetspris": 3125,
-              "sum": 12500
-            }
-          ]
-        }
-      },
-      "total_eks_mva": 3139000,
-      "merknader": "Vaskehall på Geithus med stor oljeutskiller (kr 495 523) som dominerer grunnarbeidsposten. Møre Royal trekledning (kr 172 297) er inkludert som fasadekledning i tillegg til sandwich-yttervegg. Rigg og drift er beregnet som 9% (kr 260 646) og er inkludert i totalsum."
-    }
-  },
-  {
-    "navn": "Vaskehall Glitra",
-    "bygg": {
-      "type": "Vaskehall / overflatebehandlingsanlegg",
-      "dimensjoner": "ca. 550 m² BRA (oppmåling 550 m²)",
-      "bra_m2": 550,
-      "fasade_m2": 280,
-      "tak_m2": 185
-    },
-    "detaljert_kalkulasjon": {
-      "prosjekt_navn": "Vaskehall Glitra",
-      "bygg": {
-        "type": "Vaskehall / overflatebehandlingsanlegg",
-        "dimensjoner": "ukjent grunnflate, takareal 185 m², yttervegg 280 m²",
-        "bra_m2": null,
-        "fasade_m2": 280,
-        "tak_m2": 185
-      },
-      "blokker": {
-        "stal": {
-          "total_kr": 350773,
-          "poster": [
-            {
-              "navn": "Stålkonstruksjon - prosjektert, levert og montert",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 350773,
-              "sum": 350773
-            }
-          ]
-        },
-        "tak": {
-          "total_kr": 117616,
-          "poster": [
-            {
-              "navn": "Selvbærende takplater levert galvanisert",
-              "mengde": 185,
-              "enhet": "m2",
-              "enhetspris": 270,
-              "sum": 49996
-            },
-            {
-              "navn": "Montering takplater",
-              "mengde": 185,
-              "enhet": "m2",
-              "enhetspris": 207,
-              "sum": 38295
-            },
-            {
-              "navn": "Tekkebeslag",
-              "mengde": 28,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 8050
-            },
-            {
-              "navn": "Festemateriell",
-              "mengde": 185,
-              "enhet": "m2",
-              "enhetspris": 115,
-              "sum": 21275
-            }
-          ]
-        },
-        "yttervegg": {
-          "total_kr": 423545,
-          "poster": [
-            {
-              "navn": "Sandwich 100 mm PIR levert",
-              "mengde": 280,
-              "enhet": "m2",
-              "enhetspris": 633,
-              "sum": 177100
-            },
-            {
-              "navn": "Materiell: skruer, isolasjon, fugemasse, teip osv.",
-              "mengde": 280,
-              "enhet": "m2",
-              "enhetspris": 138,
-              "sum": 38640
-            },
-            {
-              "navn": "Montasje av sandwich",
-              "mengde": 280,
-              "enhet": "m2",
-              "enhetspris": 276,
-              "sum": 77280
-            },
-            {
-              "navn": "Kutting av sandwich",
-              "mengde": 10,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 2875
-            },
-            {
-              "navn": "U-beslag i vindus- og døråpning",
-              "mengde": 12,
-              "enhet": "lm",
-              "enhetspris": 288,
-              "sum": 3450
-            },
-            {
-              "navn": "Utvendig beslagsarbeid",
-              "mengde": 280,
-              "enhet": "m2",
-              "enhetspris": 402,
-              "sum": 112700
-            },
-            {
-              "navn": "Frakt takplater og sandwich",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 11500,
-              "sum": 11500
-            }
-          ]
-        },
-        "innervegg": {
-          "total_kr": 0,
-          "poster": []
-        },
-        "porter": {
-          "total_kr": 460000,
-          "poster": [
-            {
-              "navn": "Porter (UE)",
-              "mengde": 4,
-              "enhet": "stk",
-              "enhetspris": 115000,
-              "sum": 460000
-            }
-          ]
-        },
-        "dorer_vinduer": {
-          "total_kr": 309000,
-          "poster": [
-            {
-              "navn": "Dører yttervegg",
-              "mengde": 3,
-              "enhet": "stk",
-              "enhetspris": 23000,
-              "sum": 69000
-            },
-            {
-              "navn": "Vinduer",
-              "mengde": 1,
-              "enhet": "stk",
-              "enhetspris": 240000,
-              "sum": 240000
-            }
-          ]
-        },
-        "betong": {
-          "total_kr": 489325,
-          "poster": [
-            {
-              "navn": "Betongarbeid - oppstart",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 18500,
-              "sum": 18500
-            },
-            {
-              "navn": "Rigg og drift betong",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 10000,
-              "sum": 10000
-            },
-            {
-              "navn": "Gulv på grunn 150 mm + MX 200 i 150 mm armert 2xK225 nett",
-              "mengde": 225,
-              "enhet": "m2",
-              "enhetspris": 759,
-              "sum": 170775
-            },
-            {
-              "navn": "Radonsperre",
-              "mengde": 225,
-              "enhet": "m2",
-              "enhetspris": 115,
-              "sum": 25875
-            },
-            {
-              "navn": "Støp og stålglatting",
-              "mengde": 225,
-              "enhet": "m2",
-              "enhetspris": 79,
-              "sum": 17775
-            },
-            {
-              "navn": "Membranherder",
-              "mengde": 225,
-              "enhet": "m2",
-              "enhetspris": 11,
-              "sum": 2475
-            },
-            {
-              "navn": "Galv vinkel",
-              "mengde": 1,
-              "enhet": "stk",
-              "enhetspris": 4250,
-              "sum": 4250
-            },
-            {
-              "navn": "Betongarbeid UE (total inkl. påslag 15%)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 489325,
-              "sum": 489325
-            }
-          ]
-        },
-        "grunnarbeid": {
-          "total_kr": 1083000,
-          "poster": [
-            {
-              "navn": "Graving (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 407000,
-              "sum": 407000
-            },
-            {
-              "navn": "Oljeutskiller (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 253000,
-              "sum": 253000
-            },
-            {
-              "navn": "Rørlegger (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 423500,
-              "sum": 423500
-            }
-          ]
-        },
-        "kran_lift": {
-          "total_kr": 98175,
-          "poster": [
-            {
-              "navn": "Manitou",
-              "mengde": 15,
-              "enhet": "dag",
-              "enhetspris": 2420,
-              "sum": 36300
-            },
-            {
-              "navn": "Terrenggående lift",
-              "mengde": 25,
-              "enhet": "dag",
-              "enhetspris": 715,
-              "sum": 17875
-            },
-            {
-              "navn": "Transport Manitou",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 22000,
-              "sum": 22000
-            },
-            {
-              "navn": "Transport stor lift",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 22000,
-              "sum": 22000
-            }
-          ]
-        },
-        "rigg": {
-          "total_kr": 143628,
-          "poster": [
-            {
-              "navn": "Rigg og drift (4% av arbeider)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 143628,
-              "sum": 143628
-            },
-            {
-              "navn": "RIB prosjektering (UE)",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 33000,
-              "sum": 33000
-            },
-            {
-              "navn": "Låssystem",
-              "mengde": 1,
-              "enhet": "RS",
-              "enhetspris": 5750,
-              "sum": 5750
-            }
-          ]
-        },
-        "taktekking": {
-          "total_kr": 254375,
-          "poster": [
-            {
-              "navn": "Taktekking (UE)",
-              "mengde": 185,
-              "enhet": "m2",
-              "enhetspris": 1375,
-              "sum": 254375
-            }
-          ]
-        }
-      },
-      "total_eks_mva": 3777000,
-      "merknader": "Vaskehall for Glitra med 185 m² tak og 280 m² yttervegg i sandwich 100 mm PIR. Prosjektet inkluderer 4 industri­porter, 1 vindu og 3 dører, samt graving, oljeutskiller og rørlegger som egne UE-poster. Stålkonstruksjonen er priset som ett samlet RS-beløp fra underleverandør."
     }
   }
 ]
